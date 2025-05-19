@@ -1,0 +1,299 @@
+syntax = "proto3";
+// Describes the streaming protocol messages used by OMS2.
+package Paritech.OMS2.Protocol;
+
+import public "Updates.proto";
+import public "Legacy.proto";
+
+// Describes a streaming request sent to OMS
+message RequestMessage {
+	// The protocol version for this streaming request
+	StreamingVersion Version = 1;
+	// The type of request being made
+	RequestMessageType Type = 2;
+	// The identifier of the RPC request, if any
+	string RequestID = 3;
+
+	// The details of any subscription request being submitted
+	SubscriptionDetails Subscription = 10;
+
+	// The details of an Order request being submitted
+	ClientRequest Request = 20;
+	// The details of a Feed request being submitted
+	FeedRequest Feed = 29;
+}
+
+// Describes an streaming event returned from OMS
+message EventMessage {
+	// The protocol version for this streaming update
+	StreamingVersion Version = 1;
+	// The type of event that occurred
+	EventMessageType Type = 2;
+	// The details of the original RPC request, if this is in response to one
+	RequestDetails Request = 9;
+
+	// The details of any subscription being created or released
+	SubscriptionDetails Subscription = 10;
+	// The position of the snapshot, when Type=SnapshotStart
+	SnapshotPosition Snapshot = 18;
+	// The position of the updates within this message
+	UpdatePosition Position = 19;
+
+	// The details of any Updates that have occurred
+	repeated UpdateEvent Updates = 20;
+	
+	// The details of any feed event that occurred
+	FeedEvent Feed = 30;
+	
+	// Describes the response to a Client Request
+	ClientRequestResponse RequestResponse = 40;
+}
+
+//****************************************
+
+// Identifies the streaming protocol version
+enum StreamingVersion {
+	// Initial schema
+	StreamingVersion_Initial = 0;
+}
+
+// Identifies the type of Request Message
+enum RequestMessageType {
+	// Unknown/invalid request type
+	RequestMessageType_Unknown = 0;
+
+	// A request to subscribe for updates
+	RequestMessageType_Subscribe = 10;
+	// A request to unsubscribe to updates
+	RequestMessageType_Unsubscribe = 11;
+	// Ensures all outstanding messages have been received
+	RequestMessageType_Synchronise = 19;
+
+	// A client request is being submitted
+	RequestMessageType_ClientRequest = 20;
+	// A feed request is being submitted
+	RequestMessageType_FeedRequest = 29;
+}
+
+// Identifies the type of Event Message
+enum EventMessageType {
+	// Unknown/invalid event type
+	EventMessageType_Unknown = 0;
+	
+	// Response to a request
+	EventMessageType_Response = 99;
+	
+	// Beginning a snapshot for a subscription
+	EventMessageType_SnapshotStart = 100;
+	// Ending a snapshot for a subscription
+	EventMessageType_SnapshotFinish = 101;
+	// Bookmark after a sequence of events are skipped
+	EventMessageType_Bookmark = 109;
+	
+	// Update to the System
+	EventMessageType_Update = 200;
+	
+	// Update related to an external Feed
+	EventMessageType_Feed = 300;
+}
+
+// Describes the original RPC request
+message RequestDetails {
+	// The type of request that was made
+	RequestMessageType Type = 2;
+	// The identifier of the RPC request
+	string RequestID = 3;
+	// A reference number, if relevant
+	optional int32 Reference = 9;
+
+	// Any error(s) that occurred during processing
+	repeated string Errors = 10;
+}
+
+// Describes the position of a Snapshot
+message SnapshotPosition {
+	// The set of named sequences and their current positions
+	map<string, int64> Positions = 1;
+}
+
+// Describes the position of an Update
+message UpdatePosition {
+	// The named sequence this update belongs to. If omitted, represents an out-of-band update that does not update the Position
+	string Sequence = 1;
+	// The update position within the named sequence
+	int64 Position = 2;
+
+	// The date and time the update was processed
+	TimestampWithTimeZone ExecutedAt = 9;
+}
+
+//****************************************
+
+// Represents an operation sent to OMS related to an external feed
+message FeedRequest {
+	// The type of request being made
+	FeedRequestType Type = 1;
+	// The identifier of the RPC request being responded to, if any
+	int64 RequestID = 3;
+	
+	// Describes the feed this operation relates to, plus the position for Submit operations
+	FeedPosition Position = 10;
+	// Describes the status for Status operations
+	FeedDetails Status = 11;
+	// Describes the feed configuration being submitted on a Configure operation
+	FeedConfiguration Configuration = 19;
+	
+	// Describes the operation being submitted
+	Operation Operation = 20;
+	// Describes the action being submitted
+	ExternalAction Action = 21;
+	// The details of a Client Request being processed by this feed
+	ClientRequest Request = 22;
+	// Describes the request update being submitted
+	ClientRequestUpdate Update = 23;
+
+	// A legacy protocol update
+	Update LegacyUpdate = 30;
+	// A legacy protocol trade
+	Trade LegacyTrade = 31;
+	// A legacy protocol request update
+	RequestUpdate LegacyRequest = 32;
+	// A legacy protocol one-off transaction
+	Transaction LegacyTransaction = 33;
+	
+	// Describes the response to a Client Request
+	ClientRequestResponse RequestResponse = 40;
+	// Describes the response to a Feed Query
+	FeedResponse QueryResponse = 41;
+}
+
+// Identifies a request relating to an external feed
+enum FeedRequestType {
+	// Unknown/invalid request type
+	FeedRequestType_Unknown = 0;
+	
+	// The connection wishes to supply this feed
+	FeedRequestType_Open = 10;
+	// The feed is updating its status
+	FeedRequestType_Status = 11;
+	// The feed is updating its configuration
+	FeedRequestType_Configure = 12;
+	// The feed wants to cleanup buffered updates
+	FeedRequestType_Bookmark = 18;
+	// The connection will stop supplying this feed
+	FeedRequestType_Close = 19;
+
+	// The feed is submitting an operation
+	FeedRequestType_Operation = 20;
+	// The feed is submitting an external action
+	FeedRequestType_Action = 21;
+	// The feed is submitting a Client Request being processed by this feed
+	FeedRequestType_Request = 22;
+	// The feed is submitting a request update
+	FeedRequestType_Update = 23;
+
+	// The feed is submitting a legacy update
+	FeedRequestType_LegacyUpdate = 30;
+	// The feed is submitting a legacy trade
+	FeedRequestType_LegacyTrade = 31;
+	// The feed is submitting a legacy request update
+	FeedRequestType_LegacyRequest = 32;
+	// The feed is submitting a legacy transaction
+	FeedRequestType_LegacyTransaction = 33;
+
+	// The feed is responding to a Client Request
+	FeedRequestType_RequestResponse = 40;
+	// The feed is responding to a Feed Query
+	FeedRequestType_QueryResponse = 41;
+}
+
+// Represents an event sent from OMS relating to management of a feed
+message FeedEvent {
+	// The type of event that occurred
+	FeedEventType Type = 1;
+	// The identifier of the RPC request being made, if any
+	int64 RequestID = 3;
+	
+	// Describes the feed this event relates to, plus the position for Bookmark and Resume operations
+	FeedPosition Position = 10;
+	// Describes the latest configuration on a Resume operation
+	FeedConfiguration Configuration = 19;
+	
+	// Describes a request to the external feed
+	ClientRequest Request = 20;
+	// Describes a query to the external feed
+	FeedQuery Query = 21;
+}
+
+// Identifies an event specific to an external feed
+enum FeedEventType {
+	// Unknown/invalid event type
+	FeedEventType_Unknown = 0;
+	
+	// Notification that the connection can send messages for this Feed
+	FeedEventType_Open = 10;
+	// The external feed should resume sending from this index
+	FeedEventType_Resume = 11;
+	// Foundry cannot receive messages for this feed at this present time
+	FeedEventType_Suspend = 12;
+	// The external feed has been consumed to the given index, and will not require earlier events
+	FeedEventType_Bookmark = 18;
+	// Notification that all messages sent before Close have been written
+	FeedEventType_Close = 19;
+	
+	// A Client Request has been routed to this Feed
+	FeedEventType_Request = 20;
+	// A query has been received for this Feed
+	FeedEventType_Query = 21;
+}
+
+//****************************************
+
+// Describes the configuration of a Feed
+message FeedConfiguration {
+	// The named feed this configuration belongs to
+	string Name = 1;
+
+	// The agent supplying the feed
+	string Agent = 10;
+	// The time this configuration was last updated
+	TimestampWithTimeZone Timestamp = 11;
+	// Any settings associated with the Feed
+	map<string, string> Settings = 19;
+}
+
+// Describes a position into a feed
+message FeedPosition {
+	// The named feed this update belongs to
+	string Sequence = 1;
+	// The update position within the named feed
+	int64 Position = 2;
+}
+
+// Describes a feed-specific query for a Feed
+message FeedQuery {
+	// The type of the query
+	string Type = 1;
+	// A client-specified tag for the query
+	string Tag = 2;
+	
+	// Any parameters associated with the Query
+	map<string, string> Parameters = 19;
+	// Any raw data associated with the Query
+	bytes QueryData = 20;
+}
+
+// Describes the response to a feed-specific query
+message FeedResponse {
+	// The type of the query that was made
+	string Type = 1;
+	// The client-specified tag for the original query
+	string Tag = 2;
+	
+	// Any error(s) that occurred during processing
+	repeated string Errors = 10;
+	// Any parameters associated with the response
+	map<string, string> Parameters = 19;
+	// Any raw data associated with the response
+	bytes QueryData = 20;
+}

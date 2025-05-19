@@ -1,0 +1,42 @@
+---
+title: {{package}} ({{name}})
+sidebar:
+  label: {{name}}
+---
+
+{{description}}
+
+## Messages
+
+{{#each messages}}
+### {{name}}
+
+{{#if deprecated}}**Deprecated.** {{/if}}{{description}}
+
+{{#if fields}}
+| No | Field | Type | Label | Description |
+| -- | ----- | ---- | ----- | ----------- |
+{{#each fields}}
+{{#if isLink}}
+| {{number}} | {{name}} | [{{linkType}}]({{link sourceFile}}#{{anchor linkType}}) | {{label}} | {{#if isDeprecated}}**Deprecated.** {{/if}}{{description}} |
+{{else}}
+| {{number}} | {{name}} | {{type}} | {{label}} | {{description}} |
+{{/if}}
+{{/each}}
+
+{{/if}}
+{{/each}}
+
+## Enums
+{{#each enums}}
+### {{name}}
+
+{{#if deprecated}}**Deprecated.** {{/if}}{{description}}
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+{{#each values}}
+| {{name}} | {{number}} | {{#if deprecated}}**Deprecated.** {{/if}}{{description}} |
+{{/each}}
+
+{{/each}}

@@ -1,0 +1,951 @@
+syntax = "proto3";
+// Contains the core model and messages of OMS2
+package Paritech.OMS2.Protocol;
+
+import public "DataTypes.proto";
+
+//****************************************
+
+// Identifies an Account
+message Account {
+	// The owner-specific identifier of the account
+	string AccountID = 3;
+	// The Owner ID who allocated the Account ID. Can be empty
+	string OwnerID = 39;
+}
+
+// Describes the details of an Account
+message AccountDetails {
+	// The Account the details are for
+	Account Account = 1;
+
+	// The full name of the Account
+	string Name = 10;
+	// A classification for this Account
+	string Classification = 11;
+	// The optional currency for the Account
+	optional string DefaultCurrency = 19;
+
+	// Any extended attributes for the Account
+	map<string, string> Attributes = 20;
+	// Any categories for the Account
+	repeated string Categories = 21;
+}
+
+// Describes a transform that applies to an Account
+message AccountTransform {
+	// The type of transform to perform
+	AccountTransformType Type = 1;
+	// A unique identifier of this Transformation. If omitted, will be populated by OMS
+	string TransformID = 2;
+	// The Account the transform is targeting
+	Account Account = 3;
+
+	// Any parameters that relate to this transformation
+	map<string, string> Parameters = 15;
+	// The reason for the transformation
+	string Text = 25;
+}
+
+// Identifies the type of an Account transform 
+enum AccountTransformType {
+	// Invalid/uninitialised
+	AccountTransformType_Unknown = 0;
+	// Account and/or Owner is being renamed
+	AccountTransformType_Rename = 10;
+}
+
+// Describes a position in an Asset (holding)
+message AssetPosition {
+	// Identifies the owning Account
+	Account Account = 1;
+	// Identifies the symbol held
+	string Code = 2;
+	// Identifies the issuing exchange of the symbol
+	string Exchange = 3;
+	
+	// The quantity of units held
+	BigNumber Quantity = 10;
+	// The quantity of unfilled sell orders
+	BigNumber UnfilledSells = 11;
+	
+	// The average price of the asset, if known
+	BigNumber AveragePrice = 20;
+	// The currency the average price is represented in
+	string Currency = 21;
+
+	// Any special holdings figures
+	map<string, BigNumber> Values = 30;
+}
+
+// Describes a position in a Currency (balance)
+message CashPosition {
+	// Identifies the owning Account
+	Account Account = 1;
+	// Identifies the currency held
+	string Currency = 2;
+	
+	// The booked (settled) balance
+	BigNumber Balance = 10;
+	// The total of unbooked (unsettled) adjustments
+	BigNumber UnbookedTransactions = 11;
+	// The total of unfilled buy orders
+	BigNumber UnfilledBuys = 12;
+	// Any additional money available for trading
+	BigNumber Margin = 5;
+	
+	// Any special balance figures
+	map<string, BigNumber> Values = 30;
+}
+
+// Describes the status of a system feed
+enum ConnectionStatus {
+	// Connection is unexpectedly disconnected
+	CONNECTIONSTATUS_DISCONNECTED = 0;
+	// Connection is disconnected on schedule
+	CONNECTIONSTATUS_CLOSED = 1;
+	// Connection is active
+	CONNECTIONSTATUS_ONLINE = 2;
+}
+
+// Describes a routing destination for an Exchange
+message ExchangeDestination {
+	// The execution destination code. This should be populated with a MIC (ISO10383) for the target market
+	string ExDestination = 1;
+	// The OMS route to send related requests to. If empty, uses the Exchange as the route
+	string Route = 10;
+
+	// Any metadata associated with the destination. Not used by OMS
+	map<string, string> Metadata = 19;
+
+	// Whether this destination directly corresponds to a lit market
+	bool IsLit = 20;
+	// A lit market source for prices, if available
+	string LitSource = 21;
+}
+
+// Describes the details for an Exchange
+message ExchangeDetails {
+	// The exchange code these details apply to
+	string Exchange = 5;
+
+	// The list of valid destinations
+	repeated ExchangeDestination Destinations = 12;
+	// Any metadata associated with the Exchange. Not used by OMS
+	map<string, string> Metadata = 19;
+
+	// This list of possible order statuses
+	repeated OrderStatusDetails OrderStatuses = 20;
+}
+
+// Describes the status of a system feed
+message FeedDetails {
+	// The named feed this status belongs to
+	string FeedID = 1;
+	// The status of the system feed
+	ConnectionStatus Status = 2;
+	// The time this status was last updated
+	TimestampWithTimeZone Timestamp = 3;	
+	// The time at which this status should expire and default to Disconnected. Null for indefinite
+	TimestampWithTimeZone ExpireAfter = 4;
+}
+
+// An ID with one or more values
+message ID {
+	// The identifier name
+	string Name = 1;
+	// The values associated with this identifier
+	map<string, string> Values = 2;
+}
+
+// Describes an issuer of identities
+message IdentitySource {
+	// The identifying code of this Identity Source
+	string Code = 1;
+
+	// The friendly name of the source
+	string Name = 10;
+	// Any metadata associated with the Identity Source. Not used by OMS. Not searchable
+	map<string, string> Metadata = 19;
+
+	// Identity Source authentication method
+	IdentityAuthentication Authentication = 20;
+	// Parameters for the authentication method
+	map<string, string> Parameters = 21;
+}
+
+// Identifies the authentication method used by an Identity Source
+enum IdentityAuthentication {
+	// Invalid/uninitialised
+	IdentityAuthentication_Unknown = 0;
+	// Identity is authenticated with a JSON Web Token
+	IdentityAuthentication_JWT = 1;
+}
+
+// Identifies the type of an identity
+enum IdentityType {
+	// Unknown/invalid Identity
+	IdentityType_Unknown = 0;
+	// System (OMS) identity
+	IdentityType_System = 1;
+	// Service (External system) identity
+	IdentityType_Service = 2;
+	// Operator/user identity
+	IdentityType_Operator = 3;
+}
+
+// Identifies the lifetime of an Order
+enum Lifetime {
+	// Unknown/invalid lifetime
+	LIFETIME_UNKNOWN = 0;
+	// Good for the day
+	LIFETIME_DAY = 1;
+	// Good until manually cancelled
+	LIFETIME_GOOD_TILL_CANCEL = 2;
+	// Execute immediately and cancel the remainder
+	LIFETIME_IMMEDIATE_OR_CANCEL = 3;
+	// Execute immediately in full or cancel
+	LIFETIME_FILL_OR_KILL = 4;
+	// Good until the expiry date
+	LIFETIME_GOOD_TILL_DATE = 5;
+}
+
+// Describes the metadata for an Order Status
+message OrderStatusDetails {
+	// The Order Status value seen in Update
+	string Code = 1;
+	
+	// An optional name that better represents the public status
+	string Name = 10;
+
+	// Whether this is a normal status or abnormal
+	bool IsNormal = 20;
+	// Whether this is a manually initiated status (eg: occurs in response to a user operation)
+	bool IsManual = 21;
+	// Whether this is an transitional/waiting status (eg: will transition to another status automatically)
+	bool IsTransition = 22;
+	// Whether this is a completed status (no other status changes are expected)
+	bool IsCompleted = 23;
+
+	// Whether the Order can be amended in this status
+	bool CanAmend = 30;
+	// Whether the Order can be cancelled in this status
+	bool CanCancel = 31;
+	// Whether the Order can be moved in this status
+	bool CanMove = 32;
+	// Whether the Order can trade in this status
+	bool CanTrade = 39;
+}
+
+// Identifies the type of an Order
+enum OrderType {
+	ORDERTYPE_UNKNOWN = 0;
+	ORDERTYPE_MARKET = 1;
+	ORDERTYPE_LIMIT = 2;
+	ORDERTYPE_STOP = 3;
+	ORDERTYPE_STOP_LIMIT = 4;
+	ORDERTYPE_MARKET_TO_LIMIT = 5;
+	ORDERTYPE_PEGGED = 6;
+}
+
+// Describes an Account Owner
+message OwnerDetails {
+	// The unique ID of the Owner
+	string OwnerID = 1;
+
+	// A description of the Owner
+	string Name = 10;
+	// The list of valid transfer destinations
+	repeated TransferDestination Destinations = 12;
+	// Any metadata associated with the owner. Not used by OMS
+	map<string, string> Metadata = 19;
+}
+
+// Describes a transform that applies to an Owner
+message OwnerTransform {
+	// The type of transform to perform
+	OwnerTransformType Type = 1;
+	// A unique identifier of this Transformation. If omitted, will be populated by OMS
+	string TransformID = 2;
+	// The Owner ID the transform relates to
+	string OwnerID = 39;
+	// Any parameters that relate to this transformation
+	map<string, string> Parameters = 15;
+	// The reason for the transformation
+	string Text = 25;
+}
+
+// Identifies the type of Owner transform to perform
+enum OwnerTransformType {
+	// Unknown/invalid transform
+	OwnerTransformType_Unknown = 0;
+	// Ownership identifiers are being renamed to a new ID
+	OwnerTransformType_Rename = 1;
+}
+
+// Describes the permissions for an identity
+message Permissions {
+	// The type of identity
+	IdentityType Type = 1;
+
+	// A code identifying the entity (eg: joe.blogs)
+	string Identity = 10;
+	// A code identifying the entity source (eg: Passport)
+	string Source = 11;
+	// Any metadata associated with the permissions. Not used by OMS
+	map<string, string> Metadata = 19;
+
+	// List of owners this identity has access to
+	repeated string Owners = 20;
+	// List of exchanges this identity has access to
+	repeated string Exchanges = 21;
+
+	// List of features this identity has access to
+	repeated string Features = 29;
+
+	// List of feeds this identity can submit to
+	repeated string Feeds = 30;
+}
+
+// Describes the metadata for a Client Request
+message RequestStatusDetails {
+	// The Request Status value seen in Update
+	string Code = 1;
+	
+	// An optional name that better represents the public status
+	string Name = 10;
+
+	// Whether this is a normal status or abnormal
+	bool IsNormal = 20;
+	// Whether this is a manually initiated status (eg: occurs in response to a user operation)
+	bool IsManual = 21;
+	// Whether this is an transitional/waiting status (eg: will transition to another status automatically)
+	bool IsTransition = 22;
+	// Whether this is a completed status (no other status changes are expected)
+	bool IsCompleted = 23;
+
+	// Whether the Request can be amended in this status
+	bool CanAmend = 30;
+	// Whether the Request can be cancelled in this status
+	bool CanCancel = 31;
+}
+
+// Identifies the settlement status of a Transaction
+enum SettlementStatus {
+	// Records the transaction as Booked
+	SettlementStatus_Booked = 0;
+	// Records the transaction as Unbooked
+	SettlementStatus_Unbooked = 1;
+	// Performing a settlement, moving assets from Unbooked to Booked
+	SettlementStatus_Settle = 2;
+	// Reversing a settlement, moving assets from Booked to Unbooked
+	SettlementStatus_Reverse = 3;
+}
+
+// Identifies the side of an Order
+enum Side {
+	SIDE_UNKNOWN = 0;
+	SIDE_BUY = 1;
+	SIDE_SELL = 2;
+	SIDE_SHORTSELL = 3;
+	SIDE_SHORTSELL_EXEMPT = 4;
+	SIDE_AS_DEFINED = 5;
+	SIDE_OPPOSITE = 6;
+}
+
+// Identifies the parameters for a subscription
+message SubscriptionDetails {
+	SubscriptionType Type = 1;
+
+	// The targets for the subscription
+	repeated SubscriptionTarget Targets = 10;
+}
+
+// Identifies a target to filter a subscription by
+message SubscriptionTarget {
+	// The target name
+	string Name = 1;
+	// The list of values for the target
+	repeated string Values = 2;
+}
+
+// Identifies the type of subscription
+enum SubscriptionType {
+	SubscriptionType_Unknown = 0;
+
+	SubscriptionType_Status = 10;
+	SubscriptionType_Updates = 11;
+	SubscriptionType_Transactions = 12;
+	SubscriptionType_Recent = 13;
+	SubscriptionType_Holdings = 21;
+	SubscriptionType_Balances = 22;
+	SubscriptionType_Requests = 23;
+	SubscriptionType_Orders = 24;
+
+	// System metadata - Exchanges, Owners, Request Statuses
+	SubscriptionType_Metadata = 30;
+
+	// Orders and requests related to a specific feed
+	SubscriptionType_Feed = 40;
+}
+
+// Describes a routing destination for a Transfer
+message TransferDestination {
+	// The execution destination code
+	string ExDestination = 1;
+	// The OMS route to send related requests to. If empty, uses the Owner ID as the route
+	string Route = 10;
+}
+
+// Describes a transform that applies to an Exchange or Market
+message Transform {
+	// A unique identifier of this Transformation. If omitted, will be populated by OMS
+	string TransformID = 1;
+	string Exchange = 5;
+	string Group = 37; // An identifier to only apply this Transformation to a subset of Orders
+	
+	TransformType TransformType = 21;
+	TimestampWithTimeZone Timestamp = 13; // The timestamp of the update
+	map<string, string> Parameters = 15;
+	
+	string Code = 4; // The code of the symbol being targeted
+
+	string OrderStatus = 20; // The new status to apply to matching Orders
+	TimestampWithTimeZone NotAfter = 35; // The update time after which orders should be exempt from this Transformation
+	TimestampWithTimeZone RemoveAfter = 36; // The time after which orders should be removed from the order book. Null for no removal
+
+	string Text = 25; // The reason for the transformation
+}
+
+enum TransformType {
+	// Transform all Orders that match the given Order Status
+	TRANSFORMTYPE_RESTATEMENT = 0;
+	// Remove all Orders that match the given Order Status
+	TRANSFORMTYPE_REMOVE = 1;
+	// Renames a symbol in Holdings and Orders
+	TRANSFORMTYPE_RENAME_SYMBOL = 2;
+	// Renames a currency in Balances and Orders
+	TRANSFORMTYPE_RENAME_CURRENCY = 3;
+}
+
+//****************************************
+
+// Describes a client-initiated cash transfer
+message ClientCashTransfer {
+	// The currency being transferred
+	string Currency = 10;	
+	// The named external account to transfer between. Validating this is outside the scope of OMS
+	optional string ExternalAccount = 12;
+	// The value to transfer. Positive or negative
+	BigNumber Value = 19;
+
+	// The execution destination
+	string ExDestination = 26;
+	
+	// A set of fee codes to apply to this Transfer
+	map<string, string> FeeCodes = 30;
+}
+
+// Describes an operation to amend an on-market Order
+message OrderAmend {
+	// The unique identifier of the target Order
+	string OrderID = 1;
+	// The previous request ID that changed the target Order
+	string PrevRequestID = 2;
+
+	// The code of the target symbol
+	string Code = 10;
+	// The exchange listing the target symbol
+	string Exchange = 11;
+	// The CFI code for the target symbol
+	string CfiCode = 19;
+
+	// The side the Order exists on
+	Side Side = 20;
+	// The type of the Order
+	OrderType OrderType = 21;
+	// The price of the Order
+	BigNumber Price = 22;
+	// The total quantity of the Order
+	BigNumber Quantity = 23;
+	// The lifetime of the Order
+	Lifetime Lifetime = 24;
+	// The expiry date of the Order, if any
+	TimestampWithTimeZone ExpiryDate = 25;
+	// The execution destination, should be a MIC (ISO10383)
+	string ExDestination = 26;
+	
+	// A set of fee codes to apply to this Order
+	map<string, string> FeeCodes = 30;
+}
+
+// Describes an operation to cancel an on-market Order
+message OrderCancel {
+	// The unique identifier of the target Order
+	string OrderID = 1;
+	// The previous request ID that changed the target Order
+	string PrevRequestID = 2;
+	
+	// The code of the target symbol
+	string Code = 10;
+	// The exchange listing the target symbol
+	string Exchange = 11;
+	// The CFI code for the target symbol
+	string CfiCode = 19;
+	
+	// The side the Order exists on
+	Side Side = 20;
+	// The expected quantity when cancelling
+	BigNumber Quantity = 23;
+	// The execution destination, should be a MIC (ISO10383)
+	string ExDestination = 26;
+}
+
+// Describes an operation to move an on-market Order
+message OrderMove {
+	// The unique identifier of the target Order
+	string OrderID = 1;
+	// The previous request ID that changed the target Order
+	string PrevRequestID = 2;
+	// The previous Account is required to perform Order ID remapping
+	Account PrevAccount = 3; 
+
+	// The code of the target symbol
+	string Code = 10;
+	// The exchange listing the target symbol
+	string Exchange = 11;
+	// The CFI code for the target symbol
+	string CfiCode = 19;
+
+	// The side the Order exists on
+	Side Side = 20;
+	// The execution destination, should be a MIC (ISO10383)
+	string ExDestination = 26;
+}
+
+// Describes an operation to place an Order
+message OrderNew {
+	// The code of the target symbol
+	string Code = 10;
+	// The exchange listing the target symbol
+	string Exchange = 11;
+	// The CFI code for the target symbol
+	string CfiCode = 19;
+
+	// The side the Order exists on
+	Side Side = 20;
+	// The type of the Order
+	OrderType OrderType = 21;
+	// The price of the Order, if any
+	BigNumber Price = 22;
+	// The total quantity of the Order
+	BigNumber Quantity = 23;
+	// The lifetime of the Order
+	Lifetime Lifetime = 24;
+	// The expiry date of the Order, if any
+	TimestampWithTimeZone ExpiryDate = 25;
+	// The execution destination, should be a MIC (ISO10383)
+	string ExDestination = 26;
+
+	// A set of fee codes to apply to this Order
+	map<string, string> FeeCodes = 30;
+}
+
+//****************************************
+
+// Describes a transfer of an asset
+message AssetTransfer {
+	// The unique identifier of the Order that originated this transfer, if any
+	optional string OrderID = 1;
+
+	// The code of the target symbol
+	string Code = 10;
+	// The exchange listing the target symbol
+	string Exchange = 11;
+	// The value to transfer. Positive or negative
+	BigNumber Value = 19;
+
+	// The execution destination where the transfer occurred, if any. Should be a MIC (ISO10383)
+	string ExDestination = 26;
+}
+
+// Describes a transfer of cash
+message CashTransfer {
+	// The currency being transferred
+	string Currency = 10;
+	// The pool of funds being transacted. If omitted, transfer affects Balance/Unbooked
+	optional string Pool = 11;
+	// The named external account being transferred between. Validating this is outside the scope of OMS
+	optional string ExternalAccount = 12;
+	// Any additional funds spent on this transfer (fees, taxes, etc). Negative values represent refunds
+	map<string, BigNumber> AdditionalFunds = 14;
+	// The value to transfer. Positive or negative. Does not include additional funds
+	BigNumber Value = 19;
+
+	// The settlement status of the transfer
+	SettlementStatus Settlement = 20;
+}
+
+// Describes the properties of a transaction
+message TransactionDetails {
+	// Unique identifier of this transaction
+	string TransactionID = 1;
+	// The account the transaction affects
+	Account Account = 2;
+	// Any authorities related to the transaction
+	map<string, ClientAuthority> Authorities = 9;
+	
+	// Any special values related to this transaction
+	map<string, BigNumber> Values = 30;
+	// Any special properties related to this transaction
+	map<string, string> Properties = 31;
+	// Any special IDs related to this transaction
+	repeated ID IDs = 32;
+
+	// The timestamp of the transaction initiation
+	TimestampWithTimeZone Timestamp = 40;
+}
+
+// Describes an update to an existing Client Request
+message ClientRequestUpdate {
+	// A unique identifier of this Request
+	string RequestID = 1;
+	// The account the request belongs to
+	Account Account = 2;
+	// The identifier of the Order that was associated with this Request
+	optional string OrderID = 3;
+	// An identifier assigned by the exchange. For reference and diagnostic purposes
+	optional string ExternalID = 4;
+	// Any new authorities related to the request
+	map<string, ClientAuthority> Authorities = 9;
+
+	// The current status of the Request
+	optional string Status = 10;
+	// Any outstanding errors against the Request
+	repeated string Errors = 11;
+	// Any custom text against the Request
+	optional string Text = 12;
+	// The target queue this request should be placed on (if any)
+	optional ClientQueue Target = 13;
+	// The route this client request was submitted to (if any)
+	optional string Route = 14;
+
+	// Whether the request is considered complete
+	bool IsCompleted = 20;
+}
+
+// Describes an Order Trade
+message OrderTrade {
+	// The unique identifier of the Trade
+	string TradeID = 1;
+	
+	// The type of trade
+	OrderTradeType Type = 10;
+	// The execution price. Always positive, must be adjusted based on the Order Side to calculate the final value transacted
+	BigNumber Price = 11;
+	// The execution quantity
+	BigNumber Quantity = 12;
+	// The execution destination, should be a MIC (ISO10383)
+	string ExDestination = 13;
+	// Any additional funds spent in this trade (brokerage, taxes, etc). Negative values represent refunds. Must be adjusted based on the Order Side to calculate the final value transacted
+	map<string, BigNumber> AdditionalFunds = 14;
+}
+
+// Identifies the type of trade operation that occurred
+enum OrderTradeType {
+	// Unknown/invalid trade type
+	OrderTradeType_Unknown = 0;
+
+	// Trade execution
+	OrderTradeType_Trade = 10;
+	// Trade correction
+	OrderTradeType_Correction = 11;
+	// Trade cancellation
+	OrderTradeType_Cancel = 12;
+}
+
+// Describes the state of an Order
+message OrderState {
+	// The unique identifier of the Order. Cannot change for the lifetime of the Order
+	string OrderID = 1;
+	// The account the Order belongs to
+	Account Account = 2;
+	
+	// An identifier assigned by the exchange. For reference and diagnostic purposes
+	string ExternalID = 8;
+	// A unique identifier for the latest Request applied to this Order
+	string RequestID = 9;
+
+	// The code of the target symbol
+	string Code = 10;
+	// The exchange listing the target symbol
+	string Exchange = 11;
+	// The currency this Order and any executions are quoted in
+	string Currency = 12;
+	// An grouping for performing bulk order operations (eg: transforms)
+	string Group = 13;
+	// The CFI code for the target symbol
+	string CfiCode = 19;
+	
+	// The side the Order exists on
+	Side Side = 20;
+	// The type of the Order
+	OrderType OrderType = 21;
+	// The price of the Order, if any
+	BigNumber Price = 22;
+	// The total quantity of the Order
+	BigNumber Quantity = 23;
+	// The lifetime of the Order
+	Lifetime Lifetime = 24;
+	// The date (and time) this Order will automatically expire
+	TimestampWithTimeZone ExpiryDate = 25;
+	// The execution destination, should be a MIC (ISO10383)
+	string ExDestination = 26;
+	// Any additional funds reserved for this order (brokerage, taxes, etc)
+	map<string, BigNumber> AdditionalFunds = 29;
+	
+	// Any special values related to this Order
+	map<string, BigNumber> Values = 30;
+	// Any special properties related to this Order
+	map<string, string> Properties = 31;
+	// Any special IDs related to this Order
+	repeated ID IDs = 32;
+	// The set of fee codes that apply to this Order
+	map<string, string> FeeCodes = 39;
+
+	// The timestamp when the original Order was created. Will be auto-filled by OMS-2 if not populated
+	TimestampWithTimeZone Created = 40;
+	// The timestamp of the update
+	TimestampWithTimeZone Timestamp = 41;
+	// The total executed dollar value for this Order
+	BigNumber ExecutedValue = 42;
+	// The total executed quantity for this Order
+	BigNumber ExecutedQuantity = 43;
+	// Any additional funds used on this Order (brokerage, taxes, etc). Negative values represent refunds. Must be adjusted based on the Order Side to calculate the final value transacted
+	map<string, BigNumber> ExecutedAdditionalFunds = 44;
+
+	// If the Order is completed. If false, counts towards cash/holdings reservations
+	bool IsCompleted = 47;
+	// Any error code(s) associated with the Order (describing the reason for rejection/cancellation/etc)
+	repeated string Errors = 48;
+	// The Exchange Order Status code for the Order
+	string Status = 49;
+
+	// The time after which the order should be removed from the order book. Zero for immediate removal, omitted to not remove
+	TimestampWithTimeZone RemoveAfter = 50;
+}
+
+// Describes an Update to an Order
+message OrderUpdate {
+	// Unique identifier of this Order
+	string UpdateID = 1;
+	// The previous account this Order belonged to, if being moved
+	Account PreviousAccount = 9;
+
+	// The trigger for this Update
+	OrderUpdateType Type = 10;
+	// The detailed reason for this Update
+	OrderUpdateReason Reason = 11;
+
+	// Any special values related to this Update
+	map<string, BigNumber> Values = 30;
+	// Any special properties related to this Update
+	map<string, string> Properties = 31;
+	// Any special IDs related to this Update
+	repeated ID IDs = 32;
+}
+
+// Identifies the high-level type of order update that occurred
+enum OrderUpdateType {
+	// Unknown/invalid order update type
+	OrderUpdateType_Unknown = 0;
+
+	// Order has been updated, including as part of a trade
+	OrderUpdateType_Update = 10;
+	// Order has been restated
+	OrderUpdateType_Restate = 11;
+}
+
+// Identifies the specific reason for an order update
+enum OrderUpdateReason {
+	// Unknown/invalid order update type
+	OrderUpdateReason_Unknown = 0;
+	// Order has been restated
+	OrderUpdateReason_Restated = 1;
+
+	// Order changed as part of an OrderNew
+	OrderUpdateReason_New = 10;
+	// Order changed as part of an OrderAmend or OrderMove
+	OrderUpdateReason_Replace = 11;
+	// Order changed as part of an OrderCancel
+	OrderUpdateReason_Cancel = 12;
+
+	// Order changed due to a trade
+	OrderUpdateReason_Trade = 20;
+	// Order changed due to a trade correction
+	OrderUpdateReason_TradeCorrection = 21;
+	// Order changed due to a trade cancellation
+	OrderUpdateReason_TradeCancel = 22;
+
+	// Order changed due to being rejected
+	OrderUpdateReason_Rejected = 8;
+
+	// Order changed as part of a lifecycle transition
+	OrderUpdateReason_Status = 18;
+}
+//****************************************
+
+// Describes the authority for a client operation
+message ClientAuthority {
+	// The type of identity
+	IdentityType Type = 1;
+
+	// A code identifying the entity (eg: joe.blogs)
+	string Identity = 10;
+	// A code identifying the entity source (eg: Passport)
+	string Source = 11;
+	// The path the request has taken
+	repeated string Path = 12;
+	// Any special properties related to this authority
+	map<string, string> Properties = 31;
+}
+
+// Describes a account operation being requested
+message ClientRequest {
+	// The type of account operation being requested
+	ClientRequestType Type = 1;
+	// A unique identifier of this Request
+	string RequestID = 2;
+	// The account the request belongs to
+	Account Account = 3;
+	// Whether this request should be validated and not executed
+	bool IsValidate = 5;
+	// The time the request was submitted
+	TimestampWithTimeZone Timestamp = 7;
+	// The target queue this request should be placed on (if any)
+	ClientQueue Queue = 8;
+	// The authorities related to the request
+	map<string, ClientAuthority> Authorities = 9;
+
+	// The details of the New request
+	OrderNew New = 10;
+	// The details of the Amend request
+	OrderAmend Amend = 11;
+	// The details of the Cancel request
+	OrderCancel Cancel = 12;
+	// The details of the Move request
+	OrderMove Move = 13;
+
+	// The details of the transfer
+	ClientCashTransfer CashTransfer = 20;
+
+	// Any special values related to this request
+	map<string, BigNumber> Values = 30;
+	// Any special properties related to this request
+	map<string, string> Properties = 31;
+	// Any special IDs related to this request
+	repeated ID IDs = 32;
+
+	// The request update to apply
+	ClientQueueUpdate Update = 100;
+}
+
+// Identifies the order operation being requested
+enum ClientRequestType {
+	// Unknown/invalid request
+	ClientRequestType_Unknown = 0;
+
+	// New Order request
+	ClientRequestType_New = 10;
+	// Amend Order request
+	ClientRequestType_Amend = 11;
+	// Cancel Order request
+	ClientRequestType_Cancel = 12;
+	// Move Order request
+	ClientRequestType_Move = 13;
+
+	// Requesting a transfer of cash
+	ClientRequestType_CashTransfer = 20;
+
+	// Updating another request on a Queue
+	ClientRequestType_Update = 100;
+}
+
+// Describes the response to a client request
+message ClientRequestResponse {
+	// The type of account operation that was requested
+	ClientRequestType Type = 1;
+	// A unique identifier of the created Client Request going forward (if successful)
+	string RequestID = 2;
+	// The account the request belongs to
+	Account Account = 3;
+	// A unique identifier of the associated Order (if any)
+	string OrderID = 8;
+	
+	// The current status of the Request
+	string Status = 10;
+	// Any error(s) that occurred during processing
+	repeated string Errors = 11;
+	// Any parameters associated with the response
+	map<string, string> Parameters = 19;
+
+	// Any special values related to this response
+	map<string, BigNumber> Values = 30;
+}
+
+// Describes the complete state of a request
+message ClientRequestState {
+	// The request details as provided by the client
+	ClientRequest Request = 1;
+	// An identifier assigned by the exchange. For reference and diagnostic purposes
+	string ExternalID = 2;
+	// The identifier of the Order associated with this Request
+	string OrderID = 3;
+	// The time the request was last updated
+	TimestampWithTimeZone Timestamp = 7;
+
+	// The current status of the Request
+	string Status = 10;
+	// Any outstanding errors against the Request
+	repeated string Errors = 11;
+	// Any custom text against the Request
+	string Text = 12;
+	// The route this client request was submitted to (if any)
+	string Route = 14;
+
+	// Whether the request is considered complete
+	bool IsCompleted = 20;
+}
+
+// Describes the queue a request will be routed to instead of the destination
+message ClientQueue {
+	// The name of the target queue. If omitted, represents no queue
+	optional string QueueID = 1;
+
+	// The time after which the request should be expired
+	TimestampWithTimeZone ExpireAfter = 10;
+
+	// A custom reason to assign to the operation
+	string Reason = 20;
+}
+
+// Describes an operation to manipulate a queued request
+message ClientQueueUpdate {
+	// The type of queue operation to perform
+	ClientQueueUpdateType Type = 1;
+
+	// The update to apply to the queued request
+	ClientRequestUpdate Update = 10;
+}
+
+// Identifies the queue operation to perform
+enum ClientQueueUpdateType {
+	// Unknown/invalid queue operation
+	ClientQueueUpdateType_Unknown = 0;
+	
+	// Updates the queued request
+	ClientQueueUpdateType_Update = 10;
+
+	// Replaces the target request content, but not the ID, Account, Queue, or Authority
+	ClientQueueUpdateType_Replace = 20;
+}

@@ -1,0 +1,35 @@
+syntax = "proto3";
+package Paritech.OMS2.Model;
+
+import public "Updates.proto";
+
+// Describes a request to record a transfer of assets
+message AssetTransferRequest {
+	// The common transaction details
+	Protocol.TransactionDetails Transaction = 1;
+
+	// The transfer-specific details
+	Protocol.AssetTransfer Transfer = 10;
+}
+
+// Represents the details of an update
+message AuditRecord {
+	// The sequence the Update belongs to
+	string Sequence = 1;
+	// The sequence position the Update occurred at
+	int64 ID = 2;
+	// The timestamp when the Update was created
+	Protocol.TimestampWithTimeZone Timestamp = 9;
+
+	// The body of the update
+	Protocol.UpdateEvent Update = 10;
+}
+
+// Describes a request to record a transfer cash
+message CashTransferRequest {
+	// The common transaction details
+	Protocol.TransactionDetails Transaction = 1;
+
+	// The transfer-specific details
+	Protocol.CashTransfer Transfer = 10;
+}

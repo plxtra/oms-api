@@ -1,0 +1,311 @@
+syntax = "proto3";
+// Contains legacy messages used by OMS2. New code should not utilise these messages
+package Paritech.OMS2.Protocol;
+
+import public "OMS2.proto";
+
+message Amend {
+	option deprecated = true;
+
+	string UserID = 1;
+	string RequestID = 2;
+	string AccountID = 3;
+	string OwnerID = 39; // The Owner ID who allocated the Account ID
+	string PrevRequestID = 16;
+	string OrderID = 17;
+
+	string Code = 4;
+	string Exchange = 5;
+	Side Side = 6;
+	OrderType OrderType = 7;
+	BigNumber Price = 8;
+	int64 Quantity = 9;
+	Lifetime Lifetime = 10;
+	TimestampWithTimeZone ExpiryDate = 11;
+	string ExDestination = 12; // This should be populated with a MIC (ISO10383) for the target market
+	TimestampWithTimeZone Timestamp = 13;
+	repeated ID IDs = 14;
+	map<string, string> Parameters = 15;
+	string SecurityType = 18; // This should be populated with a CFI code for the target symbol
+}
+
+message Cancel {
+	option deprecated = true;
+
+	string UserID = 1;
+	string RequestID = 2;
+	string AccountID = 3;
+	string OwnerID = 39; // The Owner ID who allocated the Account ID
+	string PrevRequestID = 16;
+	string OrderID = 17;
+
+	string Code = 4;
+	string Exchange = 5;
+	Side Side = 6;
+	int64 Quantity = 9;
+	string ExDestination = 12; // This should be populated with a MIC (ISO10383) for the target market
+	TimestampWithTimeZone Timestamp = 13;
+	repeated ID IDs = 14;
+	map<string, string> Parameters = 15;
+	string SecurityType = 18; // This should be populated with a CFI code for the target symbol
+}
+
+message Holding {
+	option deprecated = true;
+
+	string AccountID = 1;
+	string OwnerID = 39; // The Owner ID who allocated the Account ID
+
+	string Code = 2;
+	string Exchange = 3;
+
+	int64 Qty = 4;
+	BigNumber AvgPrice = 5;
+	string Currency = 6;
+	int64 UnfilledSells = 7;
+}
+
+message Move {
+	option deprecated = true;
+
+    string RequestID = 1;
+    string OrderID = 2;
+    string AccountID = 3;
+	string OwnerID = 39; // The Owner ID who allocated the Account ID
+	string UserID = 10;
+	string PrevRequestID = 11;
+	string PrevAccountID = 12; // The previous Account ID is required to perform Order ID remapping
+
+    Side Side = 4;
+    string Code = 5;
+	string Exchange = 6;
+    string ExDestination = 7; // This should be populated with a MIC (ISO10383) for the target market
+    map<string, string> Parameters = 8;
+	TimestampWithTimeZone Timestamp = 9;
+	string SecurityType = 18; // This should be populated with a CFI code for the target symbol
+}
+
+message New {
+	option deprecated = true;
+
+	string UserID = 1;
+	string RequestID = 2;
+	string AccountID = 3;
+	string OwnerID = 39; // The Owner ID who allocated the Account ID
+
+	string Code = 4;
+	string Exchange = 5;
+
+	Side Side = 6;
+	OrderType OrderType = 7;
+	BigNumber Price = 8;
+	int64 Quantity = 9;
+	Lifetime Lifetime = 10;
+	TimestampWithTimeZone ExpiryDate = 11;
+	string ExDestination = 12; // This should be populated with a MIC (ISO10383) for the target market
+	TimestampWithTimeZone Timestamp = 13;
+	repeated ID IDs = 14;
+	map<string, string> Parameters = 15;
+	string SecurityType = 16; // This should be populated with a CFI code for the target symbol
+}
+
+message OnlineDetails {
+	option deprecated = true;
+
+	int32 HeartbeatTime = 1;
+}
+
+message Position {
+	option deprecated = true;
+
+	string AccountID = 1;
+	string OwnerID = 39; // The Owner ID who allocated the Account ID
+	string Currency = 2;
+
+	BigNumber Balance = 3;
+	BigNumber UnbookedTransactions = 4;
+	BigNumber Margin = 5;
+	BigNumber UnfilledBuys = 6;
+}
+
+message Request {
+	option deprecated = true;
+
+	RequestType Type = 1;
+	RequestUpdate Update = 2;
+
+	New New = 3;
+	Amend Amend = 4;
+	Cancel Cancel = 5;
+	Move Move = 6;
+}
+
+enum RequestStatus {
+	option deprecated = true;
+
+	REQUESTSTATUS_PENDING = 0;
+	REQUESTSTATUS_COMPLETED = 1;
+	REQUESTSTATUS_REJECTED = 2;
+	REQUESTSTATUS_FAILED = 3;
+	REQUESTSTATUS_QUEUED = 10;
+}
+
+enum RequestType {
+	option deprecated = true;
+
+	REQUESTTYPE_UPDATE = 0;
+	REQUESTTYPE_NEW = 1;
+	REQUESTTYPE_AMEND = 2;
+	REQUESTTYPE_CANCEL = 3;
+	REQUESTTYPE_MOVE = 4;
+}
+
+message RequestUpdate {
+	option deprecated = true;
+
+	string RequestID = 1; // The internal identifier of the Request. May be the same as the External ID
+	string AccountID = 2;
+	string OwnerID = 39; // The Owner ID who allocated the Account ID
+	string OrderID = 3;
+	string ExternalID = 4; // The external identifier of the Request.
+
+	RequestStatus Status = 5;
+	repeated string Errors = 10; // May contain error codes
+	string Text = 11; // May contain a longer error description
+}
+
+// Update/replace holdings for an Account
+message SnapshotHoldings {
+	option deprecated = true;
+
+	string AccountID = 1;
+	string OwnerID = 39; // The Owner ID who allocated the Account ID
+	SnapshotType Type = 2;
+	repeated Holding Holdings = 3;
+}
+
+// Update/replace balances for an Account
+message SnapshotPositions {
+	option deprecated = true;
+
+	string AccountID = 1;
+	string OwnerID = 39; // The Owner ID who allocated the Account ID
+	SnapshotType Type = 2;
+	repeated Position Positions = 3;
+}
+
+enum SnapshotType {
+	option deprecated = true;
+
+	// Causes all records for the account to be replaced
+	SNAPSHOT_REPLACE = 0;
+	// Adds or overwrites only the records mentioned
+	SNAPSHOT_UPDATE = 1;
+}
+
+// Describes an Order trade, including the updated Order state
+message Trade {
+	option deprecated = true;
+
+	Update Update = 1;
+	BigNumber LastPrice = 2;
+	int64 LastQty = 3;
+	string SettlementDate = 4;
+	string TradeID = 5;
+	string TradeIDRef = 6;
+	BigNumber Brokerage = 7;
+	string LastMkt = 8; // This should be populated with a MIC (ISO10383) for the execution market
+}
+
+message Transaction {
+	option deprecated = true;
+
+	string UpdateID = 18;
+	string UserID = 1;
+	string AccountID = 3;
+	string OwnerID = 39; // The Owner ID who allocated the Account ID
+	
+	string Code = 4; // The code of the Holding being transacted. If empty, specifies a cash transaction
+	string Exchange = 5; // The exchange of the Holding being transacted. If empty, specifies a cash transaction
+	string Currency = 29; // The currency being transacted. If empty/ specifies a Holdings transaction
+	
+	TransactionType TransactionType = 21;
+	BigNumber Value = 8; // The current value of the transaction. If a cancellation, the former value
+	int64 Quantity = 9; // The current quantity of the transaction. If zero, specifies a cash transaction
+	BigNumber Previous = 10; // For a correction, specifies the previous value. Should otherwise be zero/unspecified
+	int64 PreviousQuantity = 11; // For a correction, specifies the previous quantity. Should otherwise be zero/unspecified
+	TimestampWithTimeZone Timestamp = 13; // The timestamp of the update
+	repeated ID IDs = 14;
+	map<string, string> Parameters = 15;
+	SettlementStatus Status = 16; // The settlement status of the transaction
+
+	string Text = 25;
+}
+
+enum TransactionType {
+	option deprecated = true;
+
+	TRANSACTIONTYPE_NEW = 0;
+	TRANSACTIONTYPE_CORRECTION = 1;
+	TRANSACTIONTYPE_CANCEL = 2;
+}
+
+// Describes an update to an Order
+message Update {
+	option deprecated = true;
+
+	string UpdateID = 18;
+	string UserID = 1;
+	string RequestID = 2; // A unique identifier for the latest Request. May be different from the ClOrdID if the on-market field is limited
+	string AccountID = 3;
+	string OwnerID = 39; // The Owner ID who allocated the Account ID
+	string OrderID = 17; // A unique identifier for this Order. Can be corrected by OMS-2 based on ExternalID/PrevExternalID linkages
+
+	string PrevRequestID = 16; // The previous ClOrdID (OrigClOrdID)
+	string ExternalID = 31; // The identifier used by the exchange to identify this Order. May be different to OrderID
+	string PrevExternalID = 32; // The previous identifier used by the exchange to identify this Order. Only populate when ExternalID is changing
+	string PrevAccountID = 34; // The previous account identifier. Only populate when AccountID is changing
+	string ExternalRequestID = 35; // The identifier used by the exchange to identify the last request (ClOrdID). May be different to RequestID 
+
+	string Code = 4;
+	string Exchange = 5;
+	string Currency = 29;
+	string SecurityType = 30; // This should be populated with a CFI code for the target symbol
+	string SourceFeed = 37; // An identifier to match Orders against a Transform command
+
+	Side Side = 6;
+	OrderType OrderType = 7;
+	BigNumber Price = 8;
+	int64 Quantity = 9;
+	Lifetime Lifetime = 10;
+	TimestampWithTimeZone ExpiryDate = 11;
+	string ExDestination = 12; // This should be populated with a MIC (ISO10383) for the target market
+	TimestampWithTimeZone Created = 33; // The timestamp when the original Order was created. Will be auto-filled by OMS-2 if not populated
+	TimestampWithTimeZone Timestamp = 13; // The timestamp of the update
+	repeated ID IDs = 14;
+	map<string, string> Parameters = 15;
+	string OrderStatus = 20;
+	UpdateType UpdateType = 21;
+	BigNumber AvgPrice = 22;
+	int64 CumQty = 23;
+	int64 RemainingQuantity = 24;
+	string Text = 25;
+	BigNumber CumBrokerage = 26;
+	BigNumber EstBrokerage = 27;
+
+	TimestampWithTimeZone RemoveAfter = 36; // The time after which the order should be removed from the order book. Zero for immediate removal
+}
+
+enum UpdateType {
+	option deprecated = true;
+
+	UPDATETYPE_NEW = 0;
+	UPDATETYPE_CANCELED = 4;
+	UPDATETYPE_REPLACE = 5;
+	UPDATETYPE_REJECTED = 8;
+	UPDATETYPE_RESTATED = 13;
+	UPDATETYPE_TRADE = 15;
+	UPDATETYPE_TRADE_CORRECTION = 16;
+	UPDATETYPE_TRADE_CANCEL = 17;
+	UPDATETYPE_STATUS = 18;
+}

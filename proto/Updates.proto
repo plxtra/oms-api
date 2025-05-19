@@ -1,0 +1,264 @@
+syntax = "proto3";
+// Describes the update messages used by OMS2.
+package Paritech.OMS2.Protocol;
+
+import public "OMS2.proto";
+
+// Describes an update event
+message UpdateEvent {
+	// The type of update that occurred
+	UpdateEventType Type = 1;
+	// The type of update to perform on a state-based record (eg: holding, order, request, etc)
+	UpdateAction UpdateAction = 2;
+
+	// The details of a system operation
+	Operation Operation = 10;
+	// The details of a new Exchange Action
+	ExternalAction Action = 11;
+	// The details of a new Client Request. Not populated by Request subscriptions
+	ClientRequest ClientRequest = 12;
+	// The update to an existing Client Request. Not populated by Request subscriptions
+	ClientRequestUpdate ClientRequestUpdate = 13;
+	// The updated status of a data feed
+	FeedDetails Status = 19;
+
+	// The updated state of an Asset Position
+	AssetPosition Holding = 20;
+	// The updated state of a Cash Position
+	CashPosition Balance = 21;
+	// The updated state of an Order
+	OrderState Order = 22;
+	// The updated state of a Request. Populated by Request subscriptions
+	ClientRequestState Request = 23;
+	// The details of a Transaction (cash or assets)
+	ClientTransaction Transaction = 24;
+}
+
+// Identifies the type of update that has occurred
+enum UpdateEventType {
+	// Unknown/invalid update type
+	UpdateEventType_Unknown = 0;
+
+	// Perform a system operation
+	UpdateEventType_Operation = 10;
+	// Report an Exchange Action
+	UpdateEventType_Action = 11;
+	// Report an Client Request creation
+	UpdateEventType_ClientRequest = 12;
+	// Report a Client Request update
+	UpdateEventType_ClientRequestUpdate = 13;
+	// Update a feed status
+	UpdateEventType_Status = 19;
+
+	// Update a Holding
+	UpdateEventType_Holding = 20;
+	// Update a Cash Balance
+	UpdateEventType_Balance = 21;
+	// Update an Order
+	UpdateEventType_Order = 22;
+	// Update a Client Request
+	UpdateEventType_Request = 23;
+	// Report a client transaction
+	UpdateEventType_Transaction = 24;
+}
+
+// Identifies the action to perform on an updated record
+enum UpdateAction {
+	// Default action, update/replace the existing state
+	UpdateAction_Update = 0;
+	// Remove the record state after updating
+	UpdateAction_Remove = 1;
+}
+
+//****************************************
+
+// Defines an activity that occurred on an external system
+message ExternalAction {
+	// The protocol version for this operation
+	ExternalActionVersion Version = 1;
+	// The type of operation being performed
+	ExternalActionType Type = 2;
+
+	// The latest state of an Order
+	OrderState Order = 10;
+	// The details of the Update
+	OrderUpdate Update = 11;
+	// The details of the Trade (single side only)
+	OrderTrade Trade = 12;
+
+	// The details of a cash or asset transfer
+	TransactionDetails Transaction = 20;
+	// The details of a transfer of cash to/from an account (single side only)
+	CashTransfer CashTransfer = 21;
+	// The details of a transfer of assets to/from an account (single side only)
+	AssetTransfer AssetTransfer = 22;
+}
+
+// Identifies the operational version
+enum ExternalActionVersion {
+	// Initial schema
+	ExternalActionVersion_Initial = 0;
+}
+
+// Identifies the action being performed
+enum ExternalActionType {
+	// Unknown/invalid operation
+	ExternalActionType_Unknown = 0;
+
+	// Update an Order
+	ExternalActionType_Update = 110;
+	// Replaces just the state of an Order
+	ExternalActionType_Replace = 111;
+	// Update and Trade an Order
+	ExternalActionType_Trade = 120;
+
+	// Transfer of cash (balance)
+	ExternalActionType_CashTransfer = 200;
+	// Transfer of an asset (holdings)
+	ExternalActionType_AssetTransfer = 210;
+}
+
+// Defines an operation being performed to transform the state
+message Operation {
+	// The protocol version for this operation
+	OperationVersion Version = 1;
+	// The type of operation being performed
+	OperationType Type = 2;
+
+	// The details of a system Transformation
+	Transform Transform = 10;
+	// The details of an Account transformation
+	AccountTransform AccountTransform = 11;
+	
+	// The details of an Owner
+	OwnerDetails OwnerDetails = 20;
+	// The details of an Owner transformation
+	OwnerTransform OwnerTransform = 21;
+	// The details of an Account
+	AccountDetails AccountDetails = 25;
+
+	// The details of an Exchange
+	ExchangeDetails ExchangeDetails = 30;
+	// The details of an Order Request Status
+	RequestStatusDetails RequestStatus = 31;
+	
+	// Describes the Permissions related to the operation
+	Permissions Permissions = 40;
+	// Describes the Identity Source related to the operation
+	IdentitySource IdentitySource = 41;
+}
+
+// Identifies the operational version
+enum OperationVersion {
+	// Initial schema
+	OperationVersion_Initial = 0;
+}
+
+// Identifies the operation being performed
+enum OperationType {
+	// Unknown/invalid operation
+	OperationType_Unknown = 0;
+
+	// Apply a Transform
+	OperationType_Transform = 100;
+	// Apply an Account Transform
+	OperationType_TransformAccount = 110;
+
+	// Defines the details of an Owner
+	OperationType_DefineOwner = 200;
+	// Undefines an Owner and all attached records
+	OperationType_UndefineOwner = 201;
+	// Perform an Owner Transformation
+	OperationType_TransformOwner = 210;
+
+	// Defines the details of an Account
+	OperationType_DefineAccount = 250;
+	// Undefines an Account. Does not remove any attached records
+	OperationType_UndefineAccount = 251;
+
+	// Defines the details of an Exchange
+	OperationType_DefineExchange = 300;
+	// Undefines an Exchange
+	OperationType_UndefineExchange = 301;
+	
+	// Defines the details of a Request Status
+	OperationType_DefineRequestStatus = 310;
+	// Undefines a Request Status
+	OperationType_UndefineRequestStatus = 311;
+	
+	// Defines permissions for an identity
+	OperationType_DefinePermissions = 400;
+	// Removes permissions for an identity
+	OperationType_UndefinePermissions = 401;
+	// Defines an identity source
+	OperationType_DefineIdentitySource = 410;
+	// Undefines an identity source
+	OperationType_UndefineIdentitySource = 411;
+}
+
+// Identifies a Transaction
+message ClientTransaction {
+	// The type of transaction
+	ClientTransactionType Type = 1;
+	
+	// The common transaction details
+	TransactionDetails Details = 10;
+
+	// Cash transfer-specific details
+	CashTransfer CashTransfer = 20;
+	// Asset transfer-specific details
+	AssetTransfer AssetTransfer = 21;
+
+	// Asset adjustment-specific details
+	AssetAdjustment AssetAdjustment = 30;
+	// Cash adjustment-specific details
+	CashAdjustment CashAdjustment = 31;
+}
+
+// Identifies the type of client transaction being requested
+enum ClientTransactionType {
+	ClientTransactionType_Unknown = 0;
+
+	// A trade includes a Cash and Asset transfer, targeting the same account
+	ClientTransactionType_Trade = 10;
+	// An adjustment includes a Cash and Asset adjustment, targeting the same account
+	ClientTransactionType_Adjustment = 11;
+
+	// A one-directional transfer of assets
+	ClientTransactionType_AssetTransfer = 20;
+	// A one-directional transfer of cash
+	ClientTransactionType_CashTransfer = 21;
+	
+	// A once-off asset adjustment
+	ClientTransactionType_AssetAdjustment = 30;
+	// A once-off cash adjustment
+	ClientTransactionType_CashAdjustment = 31;
+}
+
+// Describes a specialised adjustment applied to an asset
+message AssetAdjustment {
+	// The code of the target symbol
+	string Code = 10;
+	// The exchange listing the target symbol
+	string Exchange = 11;
+	// The value to transfer. Positive or negative
+	BigNumber Value = 19;
+	
+	// A reason code for this adjustment
+	string Reason = 20;
+}
+
+// Describes a specialised adjustment applied to a cash balance
+message CashAdjustment {
+	// The currency being transferred
+	string Currency = 10;
+	// The pool of funds being transacted. If omitted, transfer affects Balance/Unbooked
+	optional string Pool = 11;
+	// The value to transfer. Positive or negative
+	BigNumber Value = 19;
+	
+	// A reason code for this adjustment
+	string Reason = 20;
+	// The settlement status of the adjustment. If Value specified, assumes Booked
+	SettlementStatus Settlement = 21;
+}

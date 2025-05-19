@@ -1,0 +1,23 @@
+syntax = "proto3";
+// Provides some base datatypes
+package Paritech.OMS2.Protocol;
+
+// Describes a variable length number with fractional digits and sign
+message BigNumber {
+	// The scaling factor in decimals (10^Scale)
+	uint32 Scale = 1;
+	// Whether the value is represented as negative
+	bool IsNegative = 2;
+	// The unsigned, little-endian value of all significant digits
+	bytes Value = 3;
+}
+
+// Describes a nanosecond-accurate timestamp with a timezone offset
+message TimestampWithTimeZone {
+	// The total number of seconds in the timestamp
+	uint64 Seconds = 1;
+	// The total number of remaining nanoseconds in the timestamp
+	uint32 Nanoseconds = 2;
+	// The timezone offset applied to this timestamp
+	sint32 TzOffset = 3;
+}
