@@ -1,13 +1,40 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 import starlight from '@astrojs/starlight';
+import { defineConfig } from 'astro/config';
+
+const canonicalHost = 'plxtra.org';
+
+export const githubHost = 'plxtra.github.io';
+export const githubSite = `https://${githubHost}`;
 
 // https://astro.build/config
 export default defineConfig({
+    site: githubSite,
+	base: '/oms-api/',
+
+	trailingSlash: 'always',
+
 	integrations: [
+        sitemap({
+            // Change sitemap URLs to use custom host supplied to GitHub.
+            serialize(item) {
+                const url = new URL(item.url);
+                if (url.host === githubHost) {
+                    url.host = canonicalHost;
+                }
+                item.url = url.href;
+                return item;
+            },
+        }),
+
 		starlight({
 			title: 'Order Management System APIs',
-			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/withastro/starlight' }],
+			social: [
+				{ icon: 'github', label: 'GitHub', href: 'https://github.com/plxtra/' },
+				{ icon: 'zulip', label: 'Chat groups', href: 'https://plxtra.zulipchat.com/' },
+				{ icon: 'up-caret', label: 'Plxtra Home', href: 'https://plxtra.org/' },
+			],
 			sidebar: [
 				{
 					label: 'Command Line Tools',

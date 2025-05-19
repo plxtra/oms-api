@@ -11,6 +11,7 @@
     "update": "node update-proto"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.4.0",
     "@astrojs/starlight": "^0.34.3",
     "astro": "^5.6.1",
     "sharp": "^0.32.5"
