@@ -37,6 +37,10 @@ export default defineConfig({
 			],
 			sidebar: [
 				{
+					label: 'Plxtra',
+					link: 'https://plxtra.org/api/oms/',
+				},
+				{
 					label: 'Command Line Tools',
 					collapsed: true,
 					autogenerate: { directory: 'cli', collapsed: true },
