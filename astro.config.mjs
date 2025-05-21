@@ -4,13 +4,13 @@ import starlight from '@astrojs/starlight';
 import { defineConfig } from 'astro/config';
 
 const canonicalHost = 'plxtra.org';
+export const canonicalSite = `https://${canonicalHost}`;
 
 export const githubHost = 'plxtra.github.io';
-export const githubSite = `https://${githubHost}`;
 
 // https://astro.build/config
 export default defineConfig({
-    site: githubSite,
+    site: canonicalSite,
 	base: '/oms-api/',
 
 	trailingSlash: 'always',
