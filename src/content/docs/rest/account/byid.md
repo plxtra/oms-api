@@ -4,7 +4,7 @@ sidebar:
   label: /account/byid
 ---
 
-## GET Owners
+## GET Accounts by Owner
 
 `GET /account/byid/<owner>`
 
@@ -18,5 +18,12 @@ Performing a GET on this URL retrieves the permissions for the currently authent
 
 ### Response
 
-On success, a 200 response containing an array of [AccountDetails](/proto/oms2/#accountdetails) objects.
+On success, a 200 response containing an array of [AccountDetails](../../proto/oms2/#accountdetails) objects.
 
+## GET Account
+
+`GET /account/byid/<owner>/<account>`
+
+## DELETE Account
+
+`GET /account/byid/<owner>/<account>`

@@ -1,9 +1,17 @@
 ---
 title: OMS WebSocket API
 sidebar:
-  label: WebSocket API
+  label: Introduction
+  order: 1
 ---
 
-The OMS WebSocket API requires an access token issued by a registered OAuth Server, with the appropriate Audience for the OMS service.
+The OMS WebSocket API provides a realtime streaming interface to receive OMS events, or to submit updates directly into OMS.
 
-The WebSocket API is offered by the `oms.hub` Docker image.
+The API is offered by the OMS Hub service, within the `plxtra/oms.hub` Docker image.
+
+## Functions
+
+* [Events](./event/) can be streamed from OMS to monitor the state of the system, or to feed into other external services.
+* [Feed Adapters](./feed/) can supply events into OMS, with features for reliable delivery and recovery.
+* [Client Requests](./request/) can be routed through OMS to attached Feed Adapters.
+* [Subscriptions](./subscribe/) can be filtered to only receive events relevant to you.

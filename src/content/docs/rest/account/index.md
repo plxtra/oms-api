@@ -22,7 +22,7 @@ Performing a GET on this URL retrieves all Trading Account metadata.
 
 ### Response
 
-On success, a 200 response containing an array of [AccountDetails](/proto/oms2/#accountdetails) objects.
+On success, a 200 response containing an array of [AccountDetails](../../proto/oms2/#accountdetails) objects.
 
 ## POST
 
@@ -32,7 +32,7 @@ Performing a POST to this URL adds or updates a Trading Account
 
 ### Body
 
-A single [AccountDetails](/proto/oms2/#accountdetails) object.
+A single [AccountDetails](../../proto/oms2/#accountdetails) object.
 
 ### Response
 

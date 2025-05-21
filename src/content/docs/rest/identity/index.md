@@ -4,7 +4,7 @@ sidebar:
   label: /identity
 ---
 
-The Identity Controller is responsible for retrieving and manipulating registered Identities, such as services or users able to login and perform operations on this service.
+The Identity Controller is responsible for retrieving and manipulating registered Identities, which are services or users able to login and perform operations on this service.
 
 ## GET
 
@@ -20,7 +20,7 @@ Performing a GET on this URL retrieves all Identity permissions.
 
 ### Response
 
-On success, a 200 response containing an array of [Permissions](/proto/oms2/#permissions) objects.
+On success, a 200 response containing an array of [Permissions](../../proto/oms2/#permissions) objects.
 
 ## POST
 
@@ -32,7 +32,7 @@ Performing a POST to this URL adds or updates an Identity.
 
 ### Body
 
-A single [Permissions](/proto/oms2/#permissions) object.
+A single [Permissions](../../proto/oms2/#permissions) object.
 
 ### Response
 

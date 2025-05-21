@@ -8,7 +8,7 @@ The IdentitySource Controller is responsible for retrieving and manipulating reg
 
 Being able to define Identity Sources allows the service to authenticate credentials from multiple Authentication servers, such as for offering partner integrations or having shared infrastructure between customers.
 
-## GET
+## GET all Identity Sources
 
 `GET /identity/source`
 
@@ -22,9 +22,9 @@ Performing a GET on this URL retrieves all Identity Sources.
 
 ### Response
 
-On success, a 200 response containing an array of [IdentitySource](/proto/oms2/#identitysource) objects.
+On success, a 200 response containing an array of [IdentitySource](../../proto/oms2/#identitysource) objects.
 
-## POST
+## POST register/update Identity Source
 
 `POST /identity/source`
 
@@ -34,7 +34,7 @@ Performing a POST to this URL adds or updates an Identity Source.
 
 ### Body
 
-A single [IdentitySource](/proto/oms2/#identitysource) object.
+A single [IdentitySource](../../proto/oms2/#identitysource) object.
 
 ### Response
 

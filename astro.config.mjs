@@ -38,15 +38,41 @@ export default defineConfig({
 			sidebar: [
 				{
 					label: 'Command Line Tools',
+					collapsed: true,
 					autogenerate: { directory: 'cli', collapsed: true },
 				},
 				{
 					label: 'REST API',
+					collapsed: true,
 					autogenerate: { directory: 'rest', collapsed: true },
 				},
 				{
 					label: 'WebSocket API',
-					autogenerate: { directory: 'ws', collapsed: true },
+					collapsed: true,
+					items: [
+						"ws",
+						"ws/usage",
+						{
+							label: 'Event',
+							collapsed: true,
+							autogenerate: { directory: 'ws/event' },
+						},
+						{
+							label: 'Feed',
+							collapsed: true,
+							autogenerate: { directory: 'ws/feed' },
+						},
+						{
+							label: 'Request',
+							collapsed: true,
+							autogenerate: { directory: 'ws/request' },
+						},
+						{
+							label: 'Subscribe',
+							collapsed: true,
+							autogenerate: { directory: 'ws/subscribe' },
+						},
+					]
 				},
 				{
 					label: 'Type Reference',

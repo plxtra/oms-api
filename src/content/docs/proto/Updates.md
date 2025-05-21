@@ -1,5 +1,5 @@
 ---
-title: Paritech.OMS2.Protocol (Updates.proto)
+title: Updates.proto (Paritech.OMS2.Protocol)
 sidebar:
   label: Updates.proto
 ---

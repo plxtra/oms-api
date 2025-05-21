@@ -4,7 +4,7 @@ sidebar:
   label: /identity/current
 ---
 
-## GET
+## GET current permissions
 
 `GET /identity/current`
 
@@ -12,4 +12,4 @@ Performing a GET on this URL retrieves the permissions for the currently authent
 
 ### Response
 
-On success, a 200 response containing a single [Permissions](/proto/oms2/#permissions) object.
+On success, a 200 response containing a single [Permissions](../../proto/oms2/#permissions) object.

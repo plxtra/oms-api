@@ -1,5 +1,5 @@
 ---
-title: Paritech.OMS2.Protocol (Streaming.proto)
+title: Streaming.proto (Paritech.OMS2.Protocol)
 sidebar:
   label: Streaming.proto
 ---

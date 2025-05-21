@@ -1,14 +1,16 @@
 ---
 title: OMS Command Line Interface
 sidebar:
-  label: Overview
+  label: Introduction
 ---
 
-The CLI tools for OMS are available in the `oms-control` Docker Image, or as part of the [XOSP distribution](plxtra.org/using/cli-tools).
+The CLI tools for OMS are available in the `oms-control` Docker Image, or as part of the [XOSP distribution](/using/cli-tools).
 
-These tools typically just exercise the OMS [REST API](/rest) with some added smarts for reading and writing CSV files.
+These tools typically just exercise the OMS [REST API](../rest/) with some added smarts for reading and writing CSV files.
 
 ## Help Commands
+
+The CLI tool can provide basic documentation on the features and arguments available.
 
 *List valid Actions*
 

@@ -1,5 +1,5 @@
 ---
-title: Paritech.OMS2.Protocol (DataTypes.proto)
+title: DataTypes.proto (Paritech.OMS2.Protocol)
 sidebar:
   label: DataTypes.proto
 ---

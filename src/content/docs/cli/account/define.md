@@ -8,6 +8,8 @@ sidebar:
 
 Defines an Account's metadata in OMS.
 
+## Arguments
+
 | Field   | Description |
 |---------|-------------|
 | Hub     | The OMS-2 Hub to connect to. |
@@ -28,6 +30,11 @@ Defines an Account's metadata in OMS.
 
 The process result will be 0 on success, and a negative value on failure.
 
+## Examples
+
+```sh
+Paritech.OMS2.Control Account Define XOSP XS 1234 -Name "New Account 1234" -Class Standard -Currency AUD -Category PRO -Category INT -Attrib VettingMode Limited
+```
 
 ## More Information
 

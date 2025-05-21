@@ -1,5 +1,5 @@
 ---
-title: Paritech.OMS2.Protocol (Legacy.proto)
+title: Legacy.proto (Paritech.OMS2.Protocol)
 sidebar:
   label: Legacy.proto
 ---

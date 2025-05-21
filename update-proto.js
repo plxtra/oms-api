@@ -35,7 +35,7 @@ const root = proto.loadSync([path.join(protobufProtos, 'descriptor.proto')]);
 const fileDescriptorSet = root.lookupType("google.protobuf.FileDescriptorSet");
 const descriptors = serializer.toProto3JSON(fileDescriptorSet.decode(fs.readFileSync(descriptorFile)));
 
-fs.writeFileSync(path.join(source, 'Descriptors.json'), JSON.stringify(descriptors, null, "\t"));
+//fs.writeFileSync(path.join(source, 'Descriptors.json'), JSON.stringify(descriptors, null, "\t"));
 
 // Define some Handlebars helpes
 handlebars.registerHelper("anchor", function(type)

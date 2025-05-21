@@ -1,5 +1,5 @@
 ---
-title: Paritech.OMS2.Protocol (OMS2.proto)
+title: OMS2.proto (Paritech.OMS2.Protocol)
 sidebar:
   label: OMS2.proto
 ---

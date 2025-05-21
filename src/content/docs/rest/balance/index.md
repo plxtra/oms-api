@@ -6,9 +6,7 @@ sidebar:
 
 The Balance Controller is responsible for retrieving Cash Balances and submitting Cash Transactions.
 
-OMS does not use this data directly, and simply acts as a central store for this information to be consumed by other services.
-
-## GET all
+## GET all Balances
 
 `GET /balance`
 
@@ -22,22 +20,17 @@ Performing a GET on this URL retrieves all Balances.
 
 ### Response
 
-On success, a 200 response containing an array of [CashPosition](/proto/oms2/#cashposition) objects.
+On success, a 200 response containing an array of [CashPosition](../../proto/oms2/#cashposition) objects.
 
-## POST
+## POST Cash Transfer
 
 `POST /balance`
 
-Performing a POST to this URL adds or updates a Trading Account
+Performing a POST to this URL submits a Cash Transfer Request.
 
 ### Body
 
-| Parameter | Expected | Description |
-|-----------|----------|-------------|
-| asAt      | Optional | An ISO8601 date and time. The results returned will be those at the given timestamp. If omitted, returns the latest results. |
-
-
-A single [CashTransferRequest](/proto/oms2/#cashposition) object.
+A single [CashTransferRequest](../../proto/model/#cashtransferrequest) object.
 
 ### Response
 

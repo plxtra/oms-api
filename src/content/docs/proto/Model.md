@@ -1,5 +1,5 @@
 ---
-title: Paritech.OMS2.Model (Model.proto)
+title: Model.proto (Paritech.OMS2.Model)
 sidebar:
   label: Model.proto
 ---
