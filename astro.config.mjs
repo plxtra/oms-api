@@ -33,13 +33,9 @@ export default defineConfig({
 			social: [
 				{ icon: 'github', label: 'GitHub', href: 'https://github.com/plxtra/' },
 				{ icon: 'zulip', label: 'Chat groups', href: 'https://plxtra.zulipchat.com/' },
-				{ icon: 'up-caret', label: 'Plxtra Home', href: 'https://plxtra.org/' },
+				{ icon: 'open-book', label: 'Plxtra Home', href: 'https://plxtra.org/' },
 			],
 			sidebar: [
-				{
-					label: 'Plxtra',
-					link: 'https://plxtra.org/api/oms/',
-				},
 				{
 					label: 'Command Line Tools',
 					collapsed: true,
@@ -81,6 +77,11 @@ export default defineConfig({
 				{
 					label: 'Type Reference',
 					autogenerate: { directory: 'proto' },
+				},
+				{
+					label: 'Plxtra',
+					link: 'https://plxtra.org/api/oms/',
+					attrs: { style: 'font-style: italic' },
 				},
 			],
 		}),
