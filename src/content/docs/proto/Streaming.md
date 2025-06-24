@@ -4,7 +4,9 @@ sidebar:
   label: Streaming.proto
 ---
 
+Describes the streaming protocol messages used by OMS2.
 
+[Download Source](../Streaming.proto)
 
 ## Messages
 
@@ -144,8 +146,8 @@ Describes the position of an Update
 | 2 | Position | int64 |  | The update position within the named sequence |
 | 9 | ExecutedAt | [TimestampWithTimeZone](../datatypes/#timestampwithtimezone) |  | The date and time the update was processed |
 
-
 ## Enums
+
 ### EventMessageType
 
 Identifies the type of Event Message
@@ -218,4 +220,3 @@ Identifies the streaming protocol version
 | Name | Number | Description |
 | ---- | ------ | ----------- |
 | StreamingVersion_Initial | 0 | Initial schema |
-

@@ -2,7 +2,9 @@
 title: Order Management System APIs
 ---
 
-Choose the API that's right for you.
+Review the [concepts](./concepts/) to understand how the API is used.
+
+Then choose the API that's right for you.
 
 ## Command Line Tools
 

@@ -239,12 +239,19 @@ message OrderStatusDetails {
 
 // Identifies the type of an Order
 enum OrderType {
+	// Unknown/invalid type
 	ORDERTYPE_UNKNOWN = 0;
+	// Market Order
 	ORDERTYPE_MARKET = 1;
+	// Limit Order
 	ORDERTYPE_LIMIT = 2;
+	// Stop Loss Order
 	ORDERTYPE_STOP = 3;
+	// Stop Loss Limit Order
 	ORDERTYPE_STOP_LIMIT = 4;
+	// MarketToLimit Order
 	ORDERTYPE_MARKET_TO_LIMIT = 5;
+	// Pegged Order
 	ORDERTYPE_PEGGED = 6;
 }
 
@@ -344,17 +351,25 @@ enum SettlementStatus {
 
 // Identifies the side of an Order
 enum Side {
+	// Unknown/invalid value
 	SIDE_UNKNOWN = 0;
+	// Buy side
 	SIDE_BUY = 1;
+	// Sell side
 	SIDE_SELL = 2;
+	// Short Sell
 	SIDE_SHORTSELL = 3;
+	// Short Sell (Exempt)
 	SIDE_SHORTSELL_EXEMPT = 4;
+	// As Defined
 	SIDE_AS_DEFINED = 5;
+	// Opposite
 	SIDE_OPPOSITE = 6;
 }
 
 // Identifies the parameters for a subscription
 message SubscriptionDetails {
+	// The type of subscription
 	SubscriptionType Type = 1;
 
 	// The targets for the subscription
@@ -371,15 +386,25 @@ message SubscriptionTarget {
 
 // Identifies the type of subscription
 enum SubscriptionType {
+	// Unknown/invalid value
 	SubscriptionType_Unknown = 0;
 
+	// Upstream OMS Adapter status tracking
 	SubscriptionType_Status = 10;
+	// Low-level Orders view, updated by External Actions
 	SubscriptionType_Updates = 11;
+	// Transactions affecting Balances or Holdings
 	SubscriptionType_Transactions = 12;
-	SubscriptionType_Recent = 13;
+
+	// Recent events
+	SubscriptionType_Recent = 13 [deprecated = true];
+	// Current Asset Holdings
 	SubscriptionType_Holdings = 21;
+	// Current Cash Balances
 	SubscriptionType_Balances = 22;
+	// Open Client Requests
 	SubscriptionType_Requests = 23;
+	// High-level Orders view, updated by full state replacement
 	SubscriptionType_Orders = 24;
 
 	// System metadata - Exchanges, Owners, Request Statuses
@@ -401,20 +426,28 @@ message TransferDestination {
 message Transform {
 	// A unique identifier of this Transformation. If omitted, will be populated by OMS
 	string TransformID = 1;
+	// The exchange the Transformation targets, if relevant
 	string Exchange = 5;
-	string Group = 37; // An identifier to only apply this Transformation to a subset of Orders
-	
+	// An identifier to only apply this Transformation to a subset of Orders
+	string Group = 37;
+
+	// The type of transformation to perform
 	TransformType TransformType = 21;
-	TimestampWithTimeZone Timestamp = 13; // The timestamp of the update
+	// The timestamp of the update
+	TimestampWithTimeZone Timestamp = 13;
+	// Any parameters for the transformation
 	map<string, string> Parameters = 15;
-	
-	string Code = 4; // The code of the symbol being targeted
+	// The code of the symbol being targeted
+	string Code = 4;
+	// The new status to apply to matching Orders
+	string OrderStatus = 20;
+	// The update time after which orders should be exempt from this Transformation
+	TimestampWithTimeZone NotAfter = 35;
+	// The time after which orders should be removed from the order book. Null for no removal
+	TimestampWithTimeZone RemoveAfter = 36;
 
-	string OrderStatus = 20; // The new status to apply to matching Orders
-	TimestampWithTimeZone NotAfter = 35; // The update time after which orders should be exempt from this Transformation
-	TimestampWithTimeZone RemoveAfter = 36; // The time after which orders should be removed from the order book. Null for no removal
-
-	string Text = 25; // The reason for the transformation
+	// The reason for the transformation
+	string Text = 25;
 }
 
 enum TransformType {

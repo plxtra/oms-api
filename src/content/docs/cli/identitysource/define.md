@@ -10,19 +10,19 @@ Defines an Account's metadata in OMS.
 
 ## Arguments
 
-| Field   | Description |
-|---------|-------------|
-| Hub     | The OMS-2 Hub to connect to. |
-| Source  | The identifying code of the Identity Source. |
-| Name    | The friendly description of the Source. |
+| Field    | Description |
+|----------|-------------|
+| `Hub`    | The OMS-2 Hub to connect to. |
+| `Source` | The identifying code of the Identity Source. |
+| `Name`   | The friendly description of the Source. |
 
 ## Available Options
 
-| Option               | Description |
-|----------------------|-------------|
-| -Auth <Type>         | Authentication Type. Only supports JWT. |
-| -Meta <Key> <Value>  | Supplies a metadata key/value. Can be specified multiple times. |
-| -Param <Key> <Value> | Supplies a parameter key/value. Can be specified multiple times. |
+| Option                 | Description |
+|------------------------|-------------|
+| `-Auth <Type>`         | Authentication Type. Only supports JWT. |
+| `-Meta <Key> <Value>`  | Supplies a metadata key/value. Can be specified multiple times. |
+| `-Param <Key> <Value>` | Supplies a parameter key/value. Can be specified multiple times. |
 
 :::note[JWT Type]
 

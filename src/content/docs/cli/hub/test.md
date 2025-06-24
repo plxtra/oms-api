@@ -12,9 +12,9 @@ Checks the connectivity to a hub.
 
 | Field   | Description |
 |---------|-------------|
-| Hub     | The OMS-2 Hub to connect to. |
-| Owner   | The unique identifier of the Owner for the Account. |
-| Account | The unique Account identifer. |
+| `Hub`     | The OMS-2 Hub to connect to. |
+| `Owner`   | The unique identifier of the Owner for the Account. |
+| `Account` | The unique Account identifer. |
 
 ## Available Options
 

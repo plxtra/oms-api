@@ -1,4 +1,5 @@
 syntax = "proto3";
+// Model objects used by the APIs
 package Paritech.OMS2.Model;
 
 import public "Updates.proto";
@@ -23,6 +24,23 @@ message AuditRecord {
 
 	// The body of the update
 	Protocol.UpdateEvent Update = 10;
+}
+
+// Describes a cash settlement operation
+message CashSettlementRecord
+{
+	// The owner of the account to settle
+	string Owner = 1;
+	// The identifer of the account to settle
+	string Account = 2;
+	// The currency of the amount to settle
+	string Currency = 3;
+
+	// The expected balance when settlement occurs. Settlement will fail if this does not match. Omit to always settle.
+	optional Protocol.BigNumber ExpectedBalance = 10;
+
+	// The amount to settle
+	Protocol.BigNumber Settle = 11;
 }
 
 // Describes a request to record a transfer cash

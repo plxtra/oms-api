@@ -4,7 +4,9 @@ sidebar:
   label: DataTypes.proto
 ---
 
+Provides some base datatypes
 
+[Download Source](../DataTypes.proto)
 
 ## Messages
 
@@ -27,6 +29,3 @@ Describes a nanosecond-accurate timestamp with a timezone offset
 | 1 | Seconds | uint64 |  | The total number of seconds in the timestamp |
 | 2 | Nanoseconds | uint32 |  | The total number of remaining nanoseconds in the timestamp |
 | 3 | TzOffset | sint32 |  | The timezone offset applied to this timestamp |
-
-
-## Enums

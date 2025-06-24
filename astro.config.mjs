@@ -37,6 +37,14 @@ export default defineConfig({
 			],
 			sidebar: [
 				{
+					label: 'Introduction',
+					slug: '',
+				},
+				{
+					label: 'Concepts',
+					autogenerate: { directory: 'concepts', collapsed: true },
+				},
+				{
 					label: 'Command Line Tools',
 					collapsed: true,
 					autogenerate: { directory: 'cli', collapsed: true },

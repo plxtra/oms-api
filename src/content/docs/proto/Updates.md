@@ -4,7 +4,9 @@ sidebar:
   label: Updates.proto
 ---
 
+Describes the update messages used by OMS2.
 
+[Download Source](../Updates.proto)
 
 ## Messages
 
@@ -96,8 +98,8 @@ Describes an update event
 | 23 | Request | [ClientRequestState](../oms2/#clientrequeststate) |  | The updated state of a Request. Populated by Request subscriptions |
 | 24 | Transaction | [ClientTransaction](#clienttransaction) |  | The details of a Transaction (cash or assets) |
 
-
 ## Enums
+
 ### ClientTransactionType
 
 Identifies the type of client transaction being requested
@@ -190,4 +192,3 @@ Identifies the type of update that has occurred
 | UpdateEventType_Order | 22 | Update an Order |
 | UpdateEventType_Request | 23 | Update a Client Request |
 | UpdateEventType_Transaction | 24 | Report a client transaction |
-

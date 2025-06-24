@@ -4,13 +4,15 @@ sidebar:
   label: /balance
 ---
 
-The Balance Controller is responsible for retrieving Cash Balances and submitting Cash Transactions.
+The `balance` URI provides access to all Balances and the ability to submit Cash Transfers.
 
-## GET all Balances
+## Retrieve all Balances
 
 `GET /balance`
 
-Performing a GET on this URL retrieves all Balances.
+Retrieves all Cash Balances.
+
+**Requires the `Operator` or `Admin` feature permissions.**
 
 ### Query Parameters
 
@@ -20,13 +22,18 @@ Performing a GET on this URL retrieves all Balances.
 
 ### Response
 
-On success, a 200 response containing an array of [CashPosition](../../proto/oms2/#cashposition) objects.
+| Code | Status  | Description |
+|------|---------|-------------|
+| 200  | Success | Content is an array of [CashPosition](../../../proto/oms2/#cashposition) objects. |
+| 403  | Failure | The authenticated identity does not have the `Operator` or `Admin` permission. |
 
-## POST Cash Transfer
+## Submit a Cash Transfer
 
 `POST /balance`
 
-Performing a POST to this URL submits a Cash Transfer Request.
+Submits a Cash Transfer Request for processing.
+
+**Requires the `Alter` feature permission .**
 
 ### Body
 
@@ -34,5 +41,8 @@ A single [CashTransferRequest](../../proto/model/#cashtransferrequest) object.
 
 ### Response
 
-On success, a 204 response with no body.
-On failure, a 422 response with a body containing an array of one or more error codes describing the problem.
+| Code | Status  | Description |
+|------|---------|-------------|
+| 204  | Success | Update completed successfully, or the update would make no changes. |
+| 403  | Failure | The authenticated identity does not have the `Alter` permission. |
+| 422  | Failure | Invalid data was provided.<br>Content is a JSON array of one or more error codes describing the problem. |

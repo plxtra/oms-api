@@ -29,4 +29,4 @@ Each `Binary` message should contain a single binary-serialised Protobuf message
 
 Each `Text` message should contain a single JSON-serialised Protobuf message.
 
-See [JSON Data Types](../../proto/overview/#json-data-types) for specific notes on JSON serialisation.
+See [JSON Data Types](../../proto/#json-data-types) for specific notes on JSON serialisation.

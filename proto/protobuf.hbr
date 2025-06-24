@@ -6,9 +6,11 @@ sidebar:
 
 {{description}}
 
-## Messages
+[Download Source]({{filelink name}})
 
+## Messages
 {{#each messages}}
+
 ### {{name}}
 
 {{#if deprecated}}**Deprecated.** {{/if}}{{description}}
@@ -23,12 +25,11 @@ sidebar:
 | {{number}} | {{name}} | {{type}} | {{label}} | {{description}} |
 {{/if}}
 {{/each}}
-
 {{/if}}
-{{/each}}
-
+{{/each}}{{#if enums}}
 ## Enums
 {{#each enums}}
+
 ### {{name}}
 
 {{#if deprecated}}**Deprecated.** {{/if}}{{description}}
@@ -38,5 +39,4 @@ sidebar:
 {{#each values}}
 | {{name}} | {{number}} | {{#if deprecated}}**Deprecated.** {{/if}}{{description}} |
 {{/each}}
-
-{{/each}}
+{{/each}}{{/if}}

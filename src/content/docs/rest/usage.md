@@ -21,4 +21,4 @@ Most endpoints will support both JSON and binary Protobuf (`application/x-protob
 When an endpoint accepts or returns an array of Protobuf messages, this can be written with repeated `WriteDelimitedTo`, and read with repeated `ParseDelimitedFrom`.
 :::
 
-See [JSON Data Types](../../proto/overview/#json-data-types) for specific notes on JSON serialisation.
+See [JSON Data Types](../../proto/#json-data-types) for specific notes on JSON serialisation.

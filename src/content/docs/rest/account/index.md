@@ -4,15 +4,15 @@ sidebar:
   label: /account
 ---
 
-The Account Controller is responsible for retrieving and manipulating Trading Account metadata.
+The `account` URL provides bulk management of Trading Account metadata.
 
-OMS does not use this data directly, and simply acts as a central store for this information to be consumed by other services.
+OMS does not use this data itself, and merely provides a central store for consumption by other services.
 
-## GET all
+## Retrieve all Trading Accounts
 
 `GET /account`
 
-Performing a GET on this URL retrieves all Trading Account metadata.
+Retrieves all registered Trading Account metadata.
 
 ### Query Parameters
 
@@ -22,13 +22,17 @@ Performing a GET on this URL retrieves all Trading Account metadata.
 
 ### Response
 
-On success, a 200 response containing an array of [AccountDetails](../../proto/oms2/#accountdetails) objects.
+| Code | Status  | Description |
+|------|---------|-------------|
+| 200  | Success | Content is an array of [AccountDetails](../../proto/oms2/#accountdetails) objects. |
 
-## POST
+## Add or update Trading Account
 
 `POST /account`
 
-Performing a POST to this URL adds or updates a Trading Account
+Adds or updates the metadata for a Trading Account.
+
+**Requires the `Alter` feature permission .**
 
 ### Body
 
@@ -36,5 +40,7 @@ A single [AccountDetails](../../proto/oms2/#accountdetails) object.
 
 ### Response
 
-On success, a 204 response with no body.
-On failure, a 422 response with a body containing an array of one or more error codes describing the problem.
+| Code | Status  | Description |
+|------|---------|-------------|
+| 204  | Success | Update completed successfully, or the update would make no changes. |
+| 422  | Failure | Invalid data was provided.<br>Content is a JSON array of one or more error codes describing the problem. |

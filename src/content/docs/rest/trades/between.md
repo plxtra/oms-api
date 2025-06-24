@@ -1,9 +1,9 @@
 ---
-title: Order Management System REST API - Event Controller
+title: Order Management System REST API - Trades Controller
 sidebar:
-  label: /event/between
+  label: /trades/between
 ---
 
-## GET the generated events between two positions
+## GET the trades between two positions
 
-`GET /event/between`
+`GET /trades/between`

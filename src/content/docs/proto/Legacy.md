@@ -4,7 +4,9 @@ sidebar:
   label: Legacy.proto
 ---
 
+Contains legacy messages used by OMS2. New code should not utilise these messages
 
+[Download Source](../Legacy.proto)
 
 ## Messages
 
@@ -270,8 +272,8 @@ sidebar:
 | 27 | EstBrokerage | [BigNumber](../datatypes/#bignumber) |  |  |
 | 36 | RemoveAfter | [TimestampWithTimeZone](../datatypes/#timestampwithtimezone) |  | The time after which the order should be removed from the order book. Zero for immediate removal |
 
-
 ## Enums
+
 ### RequestStatus
 
 **Deprecated.** 
@@ -330,4 +332,3 @@ sidebar:
 | UPDATETYPE_TRADE_CORRECTION | 16 |  |
 | UPDATETYPE_TRADE_CANCEL | 17 |  |
 | UPDATETYPE_STATUS | 18 |  |
-

@@ -4,7 +4,9 @@ sidebar:
   label: OMS2.proto
 ---
 
+Contains the core model and messages of OMS2
 
+[Download Source](../OMS2.proto)
 
 ## Messages
 
@@ -474,7 +476,7 @@ Identifies the parameters for a subscription
 
 | No | Field | Type | Label | Description |
 | -- | ----- | ---- | ----- | ----------- |
-| 1 | Type | [SubscriptionType](#subscriptiontype) |  |  |
+| 1 | Type | [SubscriptionType](#subscriptiontype) |  | The type of subscription |
 | 10 | Targets | [SubscriptionTarget](#subscriptiontarget) | repeated | The targets for the subscription |
 
 ### SubscriptionTarget
@@ -516,19 +518,19 @@ Describes a transform that applies to an Exchange or Market
 | No | Field | Type | Label | Description |
 | -- | ----- | ---- | ----- | ----------- |
 | 1 | TransformID | string |  | A unique identifier of this Transformation. If omitted, will be populated by OMS |
-| 5 | Exchange | string |  |  |
+| 5 | Exchange | string |  | The exchange the Transformation targets, if relevant |
 | 37 | Group | string |  | An identifier to only apply this Transformation to a subset of Orders |
-| 21 | TransformType | [TransformType](#transformtype) |  |  |
+| 21 | TransformType | [TransformType](#transformtype) |  | The type of transformation to perform |
 | 13 | Timestamp | [TimestampWithTimeZone](../datatypes/#timestampwithtimezone) |  | The timestamp of the update |
-| 15 | Parameters | Map&lt;string,string&gt; |  |  |
+| 15 | Parameters | Map&lt;string,string&gt; |  | Any parameters for the transformation |
 | 4 | Code | string |  | The code of the symbol being targeted |
 | 20 | OrderStatus | string |  | The new status to apply to matching Orders |
 | 35 | NotAfter | [TimestampWithTimeZone](../datatypes/#timestampwithtimezone) |  | The update time after which orders should be exempt from this Transformation |
 | 36 | RemoveAfter | [TimestampWithTimeZone](../datatypes/#timestampwithtimezone) |  | The time after which orders should be removed from the order book. Null for no removal |
 | 25 | Text | string |  | The reason for the transformation |
 
-
 ## Enums
+
 ### AccountTransformType
 
 Identifies the type of an Account transform
@@ -622,13 +624,13 @@ Identifies the type of an Order
 
 | Name | Number | Description |
 | ---- | ------ | ----------- |
-| ORDERTYPE_UNKNOWN | 0 |  |
-| ORDERTYPE_MARKET | 1 |  |
-| ORDERTYPE_LIMIT | 2 |  |
-| ORDERTYPE_STOP | 3 |  |
-| ORDERTYPE_STOP_LIMIT | 4 |  |
-| ORDERTYPE_MARKET_TO_LIMIT | 5 |  |
-| ORDERTYPE_PEGGED | 6 |  |
+| ORDERTYPE_UNKNOWN | 0 | Unknown/invalid type |
+| ORDERTYPE_MARKET | 1 | Market Order |
+| ORDERTYPE_LIMIT | 2 | Limit Order |
+| ORDERTYPE_STOP | 3 | Stop Loss Order |
+| ORDERTYPE_STOP_LIMIT | 4 | Stop Loss Limit Order |
+| ORDERTYPE_MARKET_TO_LIMIT | 5 | MarketToLimit Order |
+| ORDERTYPE_PEGGED | 6 | Pegged Order |
 
 ### OrderUpdateReason
 
@@ -683,13 +685,13 @@ Identifies the side of an Order
 
 | Name | Number | Description |
 | ---- | ------ | ----------- |
-| SIDE_UNKNOWN | 0 |  |
-| SIDE_BUY | 1 |  |
-| SIDE_SELL | 2 |  |
-| SIDE_SHORTSELL | 3 |  |
-| SIDE_SHORTSELL_EXEMPT | 4 |  |
-| SIDE_AS_DEFINED | 5 |  |
-| SIDE_OPPOSITE | 6 |  |
+| SIDE_UNKNOWN | 0 | Unknown/invalid value |
+| SIDE_BUY | 1 | Buy side |
+| SIDE_SELL | 2 | Sell side |
+| SIDE_SHORTSELL | 3 | Short Sell |
+| SIDE_SHORTSELL_EXEMPT | 4 | Short Sell (Exempt) |
+| SIDE_AS_DEFINED | 5 | As Defined |
+| SIDE_OPPOSITE | 6 | Opposite |
 
 ### SubscriptionType
 
@@ -697,15 +699,15 @@ Identifies the type of subscription
 
 | Name | Number | Description |
 | ---- | ------ | ----------- |
-| SubscriptionType_Unknown | 0 |  |
-| SubscriptionType_Status | 10 |  |
-| SubscriptionType_Updates | 11 |  |
-| SubscriptionType_Transactions | 12 |  |
-| SubscriptionType_Recent | 13 |  |
-| SubscriptionType_Holdings | 21 |  |
-| SubscriptionType_Balances | 22 |  |
-| SubscriptionType_Requests | 23 |  |
-| SubscriptionType_Orders | 24 |  |
+| SubscriptionType_Unknown | 0 | Unknown/invalid value |
+| SubscriptionType_Status | 10 | Upstream OMS Adapter status tracking |
+| SubscriptionType_Updates | 11 | Low-level Orders view, updated by External Actions |
+| SubscriptionType_Transactions | 12 | Transactions affecting Balances or Holdings |
+| SubscriptionType_Recent | 13 | **Deprecated.** Recent events |
+| SubscriptionType_Holdings | 21 | Current Asset Holdings |
+| SubscriptionType_Balances | 22 | Current Cash Balances |
+| SubscriptionType_Requests | 23 | Open Client Requests |
+| SubscriptionType_Orders | 24 | High-level Orders view, updated by full state replacement |
 | SubscriptionType_Metadata | 30 | System metadata - Exchanges, Owners, Request Statuses |
 | SubscriptionType_Feed | 40 | Orders and requests related to a specific feed |
 
@@ -719,4 +721,3 @@ Identifies the type of subscription
 | TRANSFORMTYPE_REMOVE | 1 | Remove all Orders that match the given Order Status |
 | TRANSFORMTYPE_RENAME_SYMBOL | 2 | Renames a symbol in Holdings and Orders |
 | TRANSFORMTYPE_RENAME_CURRENCY | 3 | Renames a currency in Balances and Orders |
-

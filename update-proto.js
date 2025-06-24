@@ -7,19 +7,20 @@ import protos from 'google-proto-files';
 import serializer from 'proto3-json-serializer';
 
 const source = path.resolve('proto');
+const protoSource = path.resolve('public', 'proto');
 const target = path.resolve('src', 'content', 'docs', 'proto');
 const descriptorFile = path.join(source, 'Descriptors.pb');
 const protobufProtos = protos.getProtoPath('protobuf');
 
 // Identify all our .proto files
-const inputFiles = fs.readdirSync(source)
-	.map(file => path.join(source, file))
+const inputFiles = fs.readdirSync(protoSource)
+	.map(file => path.join(protoSource, file))
 	.filter(file => fs.lstatSync(file).isFile() && file.endsWith('.proto'));
 
 // Generate a single Descriptors.pb from them all
 const execproto = new Promise((resolve, reject) =>
 {
-	protoc.protoc(['--proto_path=' + source, '--include_source_info', '--descriptor_set_out=' + descriptorFile, ...inputFiles], null, (error, stdout, stderr) => 
+	protoc.protoc(['--proto_path=' + protoSource, '--include_source_info', '--descriptor_set_out=' + descriptorFile, ...inputFiles], null, (error, stdout, stderr) => 
 	{
 		if (error)
 			reject(error);
@@ -47,6 +48,13 @@ handlebars.registerHelper("link", function(type)
 {
 	if (type !== undefined && type.endsWith('.proto'))
 		return '../' + type.substring(0, type.length - 6).toLocaleLowerCase() + "/";
+	return type;
+});
+
+handlebars.registerHelper("filelink", function(type)
+{
+	if (type !== undefined && type.endsWith('.proto'))
+		return '../' + type;
 	return type;
 });
 
@@ -251,7 +259,7 @@ const views = descriptors.file.map(value =>
 	const view = {
 		name: value.name,
 		package: value.package,
-		description: locations.get("12"),
+		description: locations.get("2"),
 		messages: [],
 		enums: []
 	};

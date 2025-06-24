@@ -16,24 +16,30 @@ The CLI tool can provide basic documentation on the features and arguments avail
 
 `Paritech.OMS2.Control Help`
 
-*List valid Features for an Action*
+*List valid Actions for a Feature*
 
 `Paritech.OMS2.Control Help Hub`
 
-*List arguments and options for a Feature*
+*List arguments and options for an Action*
 
 `Paritech.OMS2.Control Help Market Create`
 
-*List valid OMS hubs*
-
-`Paritech.OMS2.Control Hub List`
-
-An OMS Hub is the front-end for an installation of OMS. In XOSP, this should output a single record.
-
 ## Basic Commands
 
-Full commands take the format of `Action Feature [Args]`.
+Full commands take the format of `Feature Action [Args]`.
 
-*Test Hub connectivity*
+### Available Actions
 
-`Paritech.OMS2.Control Hub Test XOSP`
+* [Account](./account/): Actions related to manipulating Trading Account metadata used by vetting.
+* [Balance](./balance/): Actions related to cash balances.
+* [Exchange](./exchange): Actions related to registered Exchage.
+* [Feed](./feed/): Actions related to the feed adapters attached to OMS.
+* [Holding](./holding/): Actions related to asset holdings.
+* [Hub](./hub/): Actions related to the OMS hubs.
+* [Identity](./identity/): Actions related to identities and permissions for accessing OMS.
+* [IdentitySource](./identitysource/): Actions related to identity sources (OAuth servers) allowed to authenticate with OMS.
+* [Order](./order/): Actions related to open orders.
+* [Owner](./owner/): Actions related to Trading Account Owners and metadata.
+* [Status](./status/): Actions related to Request Status metadata.
+* [Trade](./trade/): Actions related to trades processed by OMS.
+* [Transaction](./transaction/): Actions related to transactions processed through OMS.

@@ -8,6 +8,8 @@ sidebar:
 
 Lists the registered OMS-2 Hubs.
 
+An OMS Hub is the front-end for an installation of OMS. In XOSP, this should output a single record.
+
 ## Arguments
 
 ## Available Options

@@ -8,7 +8,7 @@ sidebar:
 
 `GET /identity/current`
 
-Performing a GET on this URL retrieves the permissions for the currently authenticated user.
+Retrieves the permissions for the currently authenticated user.
 
 ### Response
 

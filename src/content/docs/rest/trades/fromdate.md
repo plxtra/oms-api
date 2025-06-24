@@ -1,9 +1,9 @@
 ---
-title: Order Management System REST API - Event Controller
+title: Order Management System REST API - Trades Controller
 sidebar:
-  label: /event/fromdate
+  label: /trades/fromdate
 ---
 
-## GET the generated events after a timestamp
+## GET the trades after a timestamp
 
-`GET /event/fromdate`
+`GET /trades/fromdate`
