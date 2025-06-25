@@ -31,7 +31,7 @@ Retrieves the raw updates between two positions in the update stream.
 | Code | Status  | Description |
 |------|---------|-------------|
 | 200  | Success | Content is an array of [AuditRecord](../../../proto/model/#auditrecord) objects. |
-| 403  | Failure | You do not have permission to read the update stream. |
+| 403  | Failure | The authenticated identity does not have the `Audit` permission. |
 
 ### Examples
 

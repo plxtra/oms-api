@@ -43,4 +43,5 @@ A single [AccountDetails](../../proto/oms2/#accountdetails) object.
 | Code | Status  | Description |
 |------|---------|-------------|
 | 204  | Success | Update completed successfully, or the update would make no changes. |
+| 403  | Failure | The authenticated identity does not have the `Alter` permission. |
 | 422  | Failure | Invalid data was provided.<br>Content is a JSON array of one or more error codes describing the problem. |

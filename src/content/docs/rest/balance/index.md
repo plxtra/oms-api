@@ -6,7 +6,7 @@ sidebar:
 
 The `balance` URI provides access to all Balances and the ability to submit Cash Transfers.
 
-## Retrieve all Balances
+## Retrieve all Cash Balances
 
 `GET /balance`
 

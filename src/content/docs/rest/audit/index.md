@@ -12,14 +12,9 @@ Audit endpoints are intended for system auditing and diagnostics, and should not
 
 ## Available Endpoints
 
-* [Between](./between/): Retrieves the raw updates between two positions in the update stream.
-* [FromDate](./fromdate/): Retrieves the raw updates between two timestamps in the update stream.
-* [FromPosition](./fromposition/): Retrieves the raw updates between a position and a timestamp in the update stream.
-* [ToPosition](./toposition/): Retrieves the raw updates between a timestamp and a position in the update stream.
-
-| Endpoint                        | From     | To       |
-|---------------------------------|----------|----------|
-| [Between](./between/)           | Position | Position |
-| [FromDate](./fromdate/)         | Date     | Date     |
-| [FromPosition](./fromposition/) | Position | Date     |
-| [ToPosition](./toposition/)     | Date     | Position |
+| Endpoint                        | From     | To       | Description |
+|---------------------------------|----------|----------|-------------|
+| [Between](./between/)           | Position | Position | Retrieves updates between two positions. |
+| [FromDate](./fromdate/)         | Date     | Date     | Retrieves updates between two timestamps. |
+| [FromPosition](./fromposition/) | Position | Date     | Retrieves updates between a position and a timestamp. |
+| [ToPosition](./toposition/)     | Date     | Position | Retrieves updates between a timestamp and a position. |

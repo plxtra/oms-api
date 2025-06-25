@@ -17,14 +17,9 @@ Event endpoints are not intended for regular polling, as significant processing 
 
 ## Available Endpoints
 
-* [Between](./between/): Retrieves the events between two positions in the event stream.
-* [FromDate](./fromdate/): Retrieves the events between two timestamps in the event stream.
-* [FromPosition](./fromposition/): Retrieves the events between a position and a timestamp in the event stream.
-* [ToPosition](./toposition/): Retrieves the events between a timestamp and a position in the event stream.
-
-| Endpoint                        | From     | To       |
-|---------------------------------|----------|----------|
-| [Between](./between/)           | Position | Position |
-| [FromDate](./fromdate/)         | Date     | Date     |
-| [FromPosition](./fromposition/) | Position | Date     |
-| [ToPosition](./toposition/)     | Date     | Position |
+| Endpoint                        | From     | To       | Description |
+|---------------------------------|----------|----------|-------------|
+| [Between](./between/)           | Position | Position | Retrieves events between two positions. |
+| [FromDate](./fromdate/)         | Date     | Date     | Retrieves events between two timestamps. |
+| [FromPosition](./fromposition/) | Position | Date     | Retrieves events between a position and a timestamp. |
+| [ToPosition](./toposition/)     | Date     | Position | Retrieves events between a timestamp and a position. |

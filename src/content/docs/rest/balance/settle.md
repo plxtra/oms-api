@@ -12,6 +12,10 @@ The `balance/settle` URI provides alllows for performing cash settlements.
 
 Submits settlement transactions for unsettled cash.
 
+:::note
+In the event of a failure, it is recommended to recheck unsettled funds against the current balances.
+:::
+
 **Requires the `Alter` feature permission .**
 
 ### Query Parameters
