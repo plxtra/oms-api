@@ -87,6 +87,7 @@ function parseField(field, nestedTypes, locations, path, ns)
 		number: field.number,
 		type: null,
 		isLink: false,
+		isMap: false,
 		deprecated: field.options?.deprecated ?? false,
 		description: locations.get(path.join('.'))
 	};
@@ -115,12 +116,16 @@ function parseField(field, nestedTypes, locations, path, ns)
 
 		if (nestedType !== undefined && nestedType.mapEntry)
 		{
+			// For maps where the value is a message, we'll replace this later with a short-type
 			result.type = `Map<${nestedType.fields[0].type},${nestedType.fields[1].type}>`;
 			result.key = nestedType.fields[0];
 			result.value = nestedType.fields[1];
 			result.isLink = result.value.isLink;
+			result.isMap = true;
 			if (result.isLink)
+			{
 				result.linkType = result.value.type;
+			}
 			delete result.label;
 		}
 		else
@@ -314,15 +319,26 @@ for (const view of views)
 				if (linkType === undefined)
 				{
 					console.warn(`Failed to identify source file for type ${field.linkType} on field ${msg.fullName}.${field.name}`);
+					
+					field.linkAnchor = linkType.shortName;
+
+					continue;
+				}
+
+				if (field.isMap)
+				{
+					field.type = `Map<${field.key.type},${linkType.shortName}>`;
 				}
 				else
 				{
-					field.linkType = linkType.shortName;
+					field.type = linkType.shortName;
+				}
 
-					if (linkType.sourceFile !== view.name)
-					{
-						field.sourceFile = linkType.sourceFile;
-					}
+				field.linkAnchor = linkType.shortName;
+
+				if (linkType.sourceFile !== view.name)
+				{
+					field.sourceFile = linkType.sourceFile;
 				}
 			}
 		}

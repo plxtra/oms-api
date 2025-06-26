@@ -1,22 +1,23 @@
 ---
 title: Order Management System REST API - Balance Controller
 sidebar:
-  label: /balance/for/$
+  label: /balance/for/$/$
 ---
 
-The `balance/for/<owner>` URI provides access to current balances beneath an owner.
+The `balance/for/<owner>/<account>` URI provides access to current balances for a Trading Account.
 
-## Retrieve Cash Balances for Owner
+## Retrieve Cash Balances for Account
 
-`GET /balance/for/<owner>`
+`GET /balance/for/<owner>/<account>`
 
-Retrieves all Cash Balances for an Owner.
+Retrieves all Cash Balances for a Trading Account.
 
 ### URL Parameters
 
 | Parameter | Description |
 |-----------|-------------|
 | owner     | A URL-encoded Owner Code. |
+| account   | A URL-encoded Account ID unique to the Owner. |
 
 ### Query Parameters
 

@@ -32,7 +32,7 @@ Retrieves all registered Trading Account metadata.
 
 Adds or updates the metadata for a Trading Account.
 
-**Requires the `Alter` feature permission .**
+**Requires the `Alter` feature permission.**
 
 ### Body
 

@@ -20,7 +20,7 @@ sidebar:
 | -- | ----- | ---- | ----- | ----------- |
 {{#each fields}}
 {{#if isLink}}
-| {{number}} | {{name}} | [{{linkType}}]({{link sourceFile}}#{{anchor linkType}}) | {{label}} | {{#if isDeprecated}}**Deprecated.** {{/if}}{{description}} |
+| {{number}} | {{name}} | [{{type}}]({{link sourceFile}}#{{anchor linkAnchor}}) | {{label}} | {{#if isDeprecated}}**Deprecated.** {{/if}}{{description}} |
 {{else}}
 | {{number}} | {{name}} | {{type}} | {{label}} | {{description}} |
 {{/if}}

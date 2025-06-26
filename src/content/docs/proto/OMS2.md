@@ -57,7 +57,7 @@ Describes a position in an Asset (holding)
 | 11 | UnfilledSells | [BigNumber](../datatypes/#bignumber) |  | The quantity of unfilled sell orders |
 | 20 | AveragePrice | [BigNumber](../datatypes/#bignumber) |  | The average price of the asset, if known |
 | 21 | Currency | string |  | The currency the average price is represented in |
-| 30 | Values | [BigNumber](../datatypes/#bignumber) |  | Any special holdings figures |
+| 30 | Values | [Map&lt;string,BigNumber&gt;](../datatypes/#bignumber) |  | Any special holdings figures |
 
 ### AssetTransfer
 
@@ -83,7 +83,7 @@ Describes a position in a Currency (balance)
 | 11 | UnbookedTransactions | [BigNumber](../datatypes/#bignumber) |  | The total of unbooked (unsettled) adjustments |
 | 12 | UnfilledBuys | [BigNumber](../datatypes/#bignumber) |  | The total of unfilled buy orders |
 | 5 | Margin | [BigNumber](../datatypes/#bignumber) |  | Any additional money available for trading |
-| 30 | Values | [BigNumber](../datatypes/#bignumber) |  | Any special balance figures |
+| 30 | Values | [Map&lt;string,BigNumber&gt;](../datatypes/#bignumber) |  | Any special balance figures |
 
 ### CashTransfer
 
@@ -94,7 +94,7 @@ Describes a transfer of cash
 | 10 | Currency | string |  | The currency being transferred |
 | 11 | Pool | string | optional | The pool of funds being transacted. If omitted, transfer affects Balance/Unbooked |
 | 12 | ExternalAccount | string | optional | The named external account being transferred between. Validating this is outside the scope of OMS |
-| 14 | AdditionalFunds | [BigNumber](../datatypes/#bignumber) |  | Any additional funds spent on this transfer (fees, taxes, etc). Negative values represent refunds |
+| 14 | AdditionalFunds | [Map&lt;string,BigNumber&gt;](../datatypes/#bignumber) |  | Any additional funds spent on this transfer (fees, taxes, etc). Negative values represent refunds |
 | 19 | Value | [BigNumber](../datatypes/#bignumber) |  | The value to transfer. Positive or negative. Does not include additional funds |
 | 20 | Settlement | [SettlementStatus](#settlementstatus) |  | The settlement status of the transfer |
 
@@ -153,13 +153,13 @@ Describes a account operation being requested
 | 5 | IsValidate | bool |  | Whether this request should be validated and not executed |
 | 7 | Timestamp | [TimestampWithTimeZone](../datatypes/#timestampwithtimezone) |  | The time the request was submitted |
 | 8 | Queue | [ClientQueue](#clientqueue) |  | The target queue this request should be placed on (if any) |
-| 9 | Authorities | [ClientAuthority](#clientauthority) |  | The authorities related to the request |
+| 9 | Authorities | [Map&lt;string,ClientAuthority&gt;](#clientauthority) |  | The authorities related to the request |
 | 10 | New | [OrderNew](#ordernew) |  | The details of the New request |
 | 11 | Amend | [OrderAmend](#orderamend) |  | The details of the Amend request |
 | 12 | Cancel | [OrderCancel](#ordercancel) |  | The details of the Cancel request |
 | 13 | Move | [OrderMove](#ordermove) |  | The details of the Move request |
 | 20 | CashTransfer | [ClientCashTransfer](#clientcashtransfer) |  | The details of the transfer |
-| 30 | Values | [BigNumber](../datatypes/#bignumber) |  | Any special values related to this request |
+| 30 | Values | [Map&lt;string,BigNumber&gt;](../datatypes/#bignumber) |  | Any special values related to this request |
 | 31 | Properties | Map&lt;string,string&gt; |  | Any special properties related to this request |
 | 32 | IDs | [ID](#id) | repeated | Any special IDs related to this request |
 | 100 | Update | [ClientQueueUpdate](#clientqueueupdate) |  | The request update to apply |
@@ -177,7 +177,7 @@ Describes the response to a client request
 | 10 | Status | string |  | The current status of the Request |
 | 11 | Errors | string | repeated | Any error(s) that occurred during processing |
 | 19 | Parameters | Map&lt;string,string&gt; |  | Any parameters associated with the response |
-| 30 | Values | [BigNumber](../datatypes/#bignumber) |  | Any special values related to this response |
+| 30 | Values | [Map&lt;string,BigNumber&gt;](../datatypes/#bignumber) |  | Any special values related to this response |
 
 ### ClientRequestState
 
@@ -205,7 +205,7 @@ Describes an update to an existing Client Request
 | 2 | Account | [Account](#account) |  | The account the request belongs to |
 | 3 | OrderID | string | optional | The identifier of the Order that was associated with this Request |
 | 4 | ExternalID | string | optional | An identifier assigned by the exchange. For reference and diagnostic purposes |
-| 9 | Authorities | [ClientAuthority](#clientauthority) |  | Any new authorities related to the request |
+| 9 | Authorities | [Map&lt;string,ClientAuthority&gt;](#clientauthority) |  | Any new authorities related to the request |
 | 10 | Status | string | optional | The current status of the Request |
 | 11 | Errors | string | repeated | Any outstanding errors against the Request |
 | 12 | Text | string | optional | Any custom text against the Request |
@@ -358,8 +358,8 @@ Describes the state of an Order
 | 24 | Lifetime | [Lifetime](#lifetime) |  | The lifetime of the Order |
 | 25 | ExpiryDate | [TimestampWithTimeZone](../datatypes/#timestampwithtimezone) |  | The date (and time) this Order will automatically expire |
 | 26 | ExDestination | string |  | The execution destination, should be a MIC (ISO10383) |
-| 29 | AdditionalFunds | [BigNumber](../datatypes/#bignumber) |  | Any additional funds reserved for this order (brokerage, taxes, etc) |
-| 30 | Values | [BigNumber](../datatypes/#bignumber) |  | Any special values related to this Order |
+| 29 | AdditionalFunds | [Map&lt;string,BigNumber&gt;](../datatypes/#bignumber) |  | Any additional funds reserved for this order (brokerage, taxes, etc) |
+| 30 | Values | [Map&lt;string,BigNumber&gt;](../datatypes/#bignumber) |  | Any special values related to this Order |
 | 31 | Properties | Map&lt;string,string&gt; |  | Any special properties related to this Order |
 | 32 | IDs | [ID](#id) | repeated | Any special IDs related to this Order |
 | 39 | FeeCodes | Map&lt;string,string&gt; |  | The set of fee codes that apply to this Order |
@@ -367,7 +367,7 @@ Describes the state of an Order
 | 41 | Timestamp | [TimestampWithTimeZone](../datatypes/#timestampwithtimezone) |  | The timestamp of the update |
 | 42 | ExecutedValue | [BigNumber](../datatypes/#bignumber) |  | The total executed dollar value for this Order |
 | 43 | ExecutedQuantity | [BigNumber](../datatypes/#bignumber) |  | The total executed quantity for this Order |
-| 44 | ExecutedAdditionalFunds | [BigNumber](../datatypes/#bignumber) |  | Any additional funds used on this Order (brokerage, taxes, etc). Negative values represent refunds. Must be adjusted based on the Order Side to calculate the final value transacted |
+| 44 | ExecutedAdditionalFunds | [Map&lt;string,BigNumber&gt;](../datatypes/#bignumber) |  | Any additional funds used on this Order (brokerage, taxes, etc). Negative values represent refunds. Must be adjusted based on the Order Side to calculate the final value transacted |
 | 47 | IsCompleted | bool |  | If the Order is completed. If false, counts towards cash/holdings reservations |
 | 48 | Errors | string | repeated | Any error code(s) associated with the Order (describing the reason for rejection/cancellation/etc) |
 | 49 | Status | string |  | The Exchange Order Status code for the Order |
@@ -401,7 +401,7 @@ Describes an Order Trade
 | 11 | Price | [BigNumber](../datatypes/#bignumber) |  | The execution price. Always positive, must be adjusted based on the Order Side to calculate the final value transacted |
 | 12 | Quantity | [BigNumber](../datatypes/#bignumber) |  | The execution quantity |
 | 13 | ExDestination | string |  | The execution destination, should be a MIC (ISO10383) |
-| 14 | AdditionalFunds | [BigNumber](../datatypes/#bignumber) |  | Any additional funds spent in this trade (brokerage, taxes, etc). Negative values represent refunds. Must be adjusted based on the Order Side to calculate the final value transacted |
+| 14 | AdditionalFunds | [Map&lt;string,BigNumber&gt;](../datatypes/#bignumber) |  | Any additional funds spent in this trade (brokerage, taxes, etc). Negative values represent refunds. Must be adjusted based on the Order Side to calculate the final value transacted |
 
 ### OrderUpdate
 
@@ -413,7 +413,7 @@ Describes an Update to an Order
 | 9 | PreviousAccount | [Account](#account) |  | The previous account this Order belonged to, if being moved |
 | 10 | Type | [OrderUpdateType](#orderupdatetype) |  | The trigger for this Update |
 | 11 | Reason | [OrderUpdateReason](#orderupdatereason) |  | The detailed reason for this Update |
-| 30 | Values | [BigNumber](../datatypes/#bignumber) |  | Any special values related to this Update |
+| 30 | Values | [Map&lt;string,BigNumber&gt;](../datatypes/#bignumber) |  | Any special values related to this Update |
 | 31 | Properties | Map&lt;string,string&gt; |  | Any special properties related to this Update |
 | 32 | IDs | [ID](#id) | repeated | Any special IDs related to this Update |
 
@@ -496,8 +496,8 @@ Describes the properties of a transaction
 | -- | ----- | ---- | ----- | ----------- |
 | 1 | TransactionID | string |  | Unique identifier of this transaction |
 | 2 | Account | [Account](#account) |  | The account the transaction affects |
-| 9 | Authorities | [ClientAuthority](#clientauthority) |  | Any authorities related to the transaction |
-| 30 | Values | [BigNumber](../datatypes/#bignumber) |  | Any special values related to this transaction |
+| 9 | Authorities | [Map&lt;string,ClientAuthority&gt;](#clientauthority) |  | Any authorities related to the transaction |
+| 30 | Values | [Map&lt;string,BigNumber&gt;](../datatypes/#bignumber) |  | Any special values related to this transaction |
 | 31 | Properties | Map&lt;string,string&gt; |  | Any special properties related to this transaction |
 | 32 | IDs | [ID](#id) | repeated | Any special IDs related to this transaction |
 | 40 | Timestamp | [TimestampWithTimeZone](../datatypes/#timestampwithtimezone) |  | The timestamp of the transaction initiation |

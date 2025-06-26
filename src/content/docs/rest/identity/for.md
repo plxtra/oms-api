@@ -1,18 +1,28 @@
 ---
 title: Order Management System REST API - Identity Controller
 sidebar:
-  label: /identity/for
+  label: /identity/for/$
 ---
 
-## GET Permissions by Source
+The `identity/for/$` URI provides access to permissions for a specific authentication source.
+
+## Retrieves registered identities by Source
 
 `GET /identity/for/<source>`
 
-## GET Permissions for Identity
+Retrieves the registered identity permissions for this authentication source.
 
-`GET /identity/for/<source>/<identity>`
+**Requires the `Admin` feature permission.**
 
-## DELETE Permissions for Identity
+### URL Parameters
 
-`DELETE /identity/for/<source>/<identity>`
+| Parameter | Description |
+|-----------|-------------|
+| source    | A URL-encoded Identity Source name. |
 
+### Response
+
+| Code | Status  | Description |
+|------|---------|-------------|
+| 200  | Success | Content is an array of [Permissions](../../../proto/oms2/#permissions) objects. |
+| 403  | Failure | The authenticated identity does not have the `Admin` permission. |

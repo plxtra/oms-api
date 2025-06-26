@@ -4,13 +4,15 @@ sidebar:
   label: /holding
 ---
 
-The Holding Controller is responsible for retrieving Asset Holdings and submitting Asset Transactions.
+The `balance` URI provides access to all Holdings and the ability to submit Asset Transfers.
 
-## GET all Holdings
+## Retrieve all Asset Holdings
 
 `GET /holding`
 
-Performing a GET on this URL retrieves all Holdings.
+Retrieves all Asset Holdings.
+
+**Requires the `Operator` or `Admin` feature permissions.**
 
 ### Query Parameters
 
@@ -20,13 +22,18 @@ Performing a GET on this URL retrieves all Holdings.
 
 ### Response
 
-On success, a 200 response containing an array of [CashPosition](../../proto/oms2/#assetposition) objects.
+| Code | Status  | Description |
+|------|---------|-------------|
+| 200  | Success | Content is an array of [AssetPosition](../../../proto/oms2/#assetposition) objects. |
+| 403  | Failure | The authenticated identity does not have the `Operator` or `Admin` permission. |
 
-## POST Asset Transfer
+## Submit an Asset Transfer
 
 `POST /holding`
 
-Performing a POST to this URL submits an Asset Transfer Request.
+Submits an Asset Transfer Request for processing.
+
+**Requires the `Alter` feature permission.**
 
 ### Body
 
@@ -34,5 +41,8 @@ A single [AssetTransferRequest](../../proto/model/#assettransferrequest) object.
 
 ### Response
 
-On success, a 204 response with no body.
-On failure, a 422 response with a body containing an array of one or more error codes describing the problem.
+| Code | Status  | Description |
+|------|---------|-------------|
+| 204  | Success | Update completed successfully, or the update would make no changes. |
+| 403  | Failure | The authenticated identity does not have the `Alter` permission. |
+| 422  | Failure | Invalid data was provided.<br>Content is a JSON array of one or more error codes describing the problem. |

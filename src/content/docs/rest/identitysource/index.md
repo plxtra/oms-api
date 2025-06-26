@@ -4,33 +4,40 @@ sidebar:
   label: /identity/source
 ---
 
-The IdentitySource Controller is responsible for retrieving and manipulating registered Identity Sources, such as OAuth servers.
+The `identity/source` URI provides access to registered Identity Sources.
 
 Being able to define Identity Sources allows the service to authenticate credentials from multiple Authentication servers, such as for offering partner integrations or having shared infrastructure between customers.
 
-## GET all Identity Sources
+## Retrieve all Identity Sources
 
 `GET /identity/source`
 
-Performing a GET on this URL retrieves all Identity Sources.
+Retrieves all the registered Identity Sources.
 
-### Query Parameters
-
-| Parameter | Expected | Description |
-|-----------|----------|-------------|
-| asAt      | Optional | An ISO8601 date and time. The results returned will be those at the given timestamp. If omitted, returns the latest results. |
+**Requires the `Admin` feature permission.**
 
 ### Response
 
-On success, a 200 response containing an array of [IdentitySource](../../proto/oms2/#identitysource) objects.
+| Code | Status  | Description |
+|------|---------|-------------|
+| 200  | Success | Content is an array of [IdentitySource](../../proto/oms2/#identitysource) objects. |
+| 403  | Failure | The authenticated identity does not have the `Admin` permission. |
 
-## POST register/update Identity Source
+## Add or update an Identity Source
 
 `POST /identity/source`
 
-Performing a POST to this URL adds or updates an Identity Source.
+Adds or updates a registered Identity Source.
 
-**Note:** When no Identities have been registered with the service, this endpoint simply requires a valid access token, and does not perform any security checks.
+**Requires the `Admin` feature permission.**
+
+:::caution
+An exception applies when no Identities have been registered. In this case, this endpoint simply requires a valid access token. The authenticated user does not require any permissions.
+:::
+
+:::caution
+Altering an Identity Source incorrectly can cause OMS to be unable to authenticate requests. Use caution.
+:::
 
 ### Body
 
@@ -38,5 +45,8 @@ A single [IdentitySource](../../proto/oms2/#identitysource) object.
 
 ### Response
 
-On success, a 204 response with no body.
-On failure, a 422 response with a body containing an array of one or more error codes describing the problem.
+| Code | Status  | Description |
+|------|---------|-------------|
+| 204  | Success | Update completed successfully, or the update would make no changes. |
+| 403  | Failure | The authenticated identity does not have the `Admin` permission. |
+| 422  | Failure | Invalid data was provided.<br>Content is a JSON array of one or more error codes describing the problem. |

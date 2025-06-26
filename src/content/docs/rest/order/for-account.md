@@ -1,24 +1,23 @@
 ---
 title: Order Management System REST API - Order Controller
 sidebar:
-  label: /order/on/$
+  label: /order/for/$/$
 ---
 
-The `order/on/<exchange>` URI provides access to known Orders on a specific Exchange.
+The `order/for/<owner>/<account>` URI provides access to known Orders for a specific Trading Account.
 
-## Retrieve Orders for an Exchange
+## Retrieve Orders for a Trading Account
 
-`GET /order/on/<exchange>`
+`GET /order/for/<owner>/<account>`
 
-Retrieves all Orders on the Exchange known to OMS.
-
-**Requires the `Operator` or `Admin` feature permissions.**
+Retrieves all Orders for the Trading Account known to OMS.
 
 ### URL Parameters
 
 | Parameter | Description |
 |-----------|-------------|
-| exchange     | A URL-encoded Exchange Code. |
+| owner     | A URL-encoded Owner Code. |
+| account   | A URL-encoded Account ID unique to the Owner. |
 
 ### Query Parameters
 
@@ -32,4 +31,4 @@ Retrieves all Orders on the Exchange known to OMS.
 | Code | Status  | Description |
 |------|---------|-------------|
 | 200  | Success | Content is an array of [OrderState](../../proto/oms2/#orderstate) objects. |
-| 404  | Failure | Owner does not exist, or the authenticated identity does not have permission to see this owner. |
+| 404  | Failure | Owner or Trading Account does not exist, or the authenticated identity does not have permission to see this Trading Account. |

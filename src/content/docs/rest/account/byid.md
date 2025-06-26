@@ -4,7 +4,7 @@ sidebar:
   label: /account/byid/$
 ---
 
-The `account/byid/<owner>/<account>` URL manipulates Trading Account metadata across an Owner.
+The `account/byid/<owner>` URL manipulates Trading Account metadata across an Owner.
 
 ## Retrieve Trading Accounts by Owner
 
@@ -28,5 +28,5 @@ Retrieves the metadata for Trading Accounts with the given Owner.
 
 | Code | Status  | Description |
 |------|---------|-------------|
-| 200  | Success | The Owner exists.<br>Content is an array of [AccountDetails](../../proto/oms2/#accountdetails) objects. |
+| 200  | Success | The Owner exists.<br>Content is an array of [AccountDetails](../../../proto/oms2/#accountdetails) objects. |
 | 404  | Failure | Owner does not exist, or the authenticated user does not have permission to see this Owner. |

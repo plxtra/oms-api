@@ -4,7 +4,9 @@ sidebar:
   label: /identity/current
 ---
 
-## GET current permissions
+The `identity/current` URI provides access to permissions for the authenticated user.
+
+## Retrieve current permissions
 
 `GET /identity/current`
 
@@ -12,4 +14,6 @@ Retrieves the permissions for the currently authenticated user.
 
 ### Response
 
-On success, a 200 response containing a single [Permissions](../../proto/oms2/#permissions) object.
+| Code | Status  | Description |
+|------|---------|-------------|
+| 200  | Success | User is authenticated.<br>Content is a single [Permissions](../../../proto/oms2/#permissions) object. |

@@ -29,12 +29,12 @@ Retrieves the metadata for a Trading Account.
 
 | Code | Status  | Description |
 |------|---------|-------------|
-| 200  | Success | The Trading Account was found.<br>Content is a single [AccountDetails](../../proto/oms2/#accountdetails) object. |
-| 404  | Failure | Owner or Trading Account does not exist, or the authenticated identity does not have permission to see this account. |
+| 200  | Success | The Trading Account was found.<br>Content is a single [AccountDetails](../../../proto/oms2/#accountdetails) object. |
+| 404  | Failure | Owner or Trading Account metadata does not exist, or the authenticated identity does not have permission to see this account. |
 
 ## Remove a Trading Account
 
-`GET /account/byid/<owner>/<account>`
+`DELETE /account/byid/<owner>/<account>`
 
 Removes the metadata for a Trading Account.
 
@@ -51,7 +51,7 @@ Removes the metadata for a Trading Account.
 
 | Code | Status  | Description |
 |------|---------|-------------|
-| 200  | Success | The Trading Account was found.<br>Content is a single [AccountDetails](../../proto/oms2/#accountdetails) object. |
+| 204  | Success | The Trading Account was removed. |
 | 403  | Failure | The authenticated identity does not have the `Alter` permission. |
-| 404  | Failure | Owner or Trading Account does not exist, or the authenticated identity does not have permission to see this account. |
+| 404  | Failure | Owner or Trading Account metadata does not exist, or the authenticated identity does not have permission to see this account. |
 | 422  | Failure | A failure occurred.<br>Content is a JSON array of one or more error codes describing the problem. |

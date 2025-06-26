@@ -23,7 +23,7 @@ Retrieves the listed Trading Accounts.
 
 | Code | Status  | Description |
 |------|---------|-------------|
-| 200  | Success | Content is an array of [AccountDetails](../../proto/oms2/#accountdetails) objects.<br>Trading Accounts that do not exist or are not visible will be omitted. |
+| 200  | Success | Content is an array of [AccountDetails](../../../proto/oms2/#accountdetails) objects.<br>Trading Accounts that do not exist or are not visible will be omitted. |
 
 ## Retreive Trading Accounts by ID (bulk)
 
@@ -47,4 +47,4 @@ A JSON string array, listing the Trading Account IDs of the format `<owner>/<acc
 
 | Code | Status  | Description |
 |------|---------|-------------|
-| 200  | Success | Content is an array of [AccountDetails](../../proto/oms2/#accountdetails) objects.<br>Trading Accounts that do not exist or are not visible will be omitted. |
+| 200  | Success | Content is an array of [AccountDetails](../../../proto/oms2/#accountdetails) objects.<br>Trading Accounts that do not exist or are not visible will be omitted. |

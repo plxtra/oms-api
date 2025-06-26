@@ -33,7 +33,7 @@ Retrieves all Cash Balances.
 
 Submits a Cash Transfer Request for processing.
 
-**Requires the `Alter` feature permission .**
+**Requires the `Alter` feature permission.**
 
 ### Body
 
