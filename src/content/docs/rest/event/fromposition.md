@@ -32,7 +32,7 @@ Eg: `owner=A&account=B%2FC` will return events for all Accounts with Owner A, pl
 
 | Code | Status  | Description |
 |------|---------|-------------|
-| 200  | Success | Content is an array of [AuditRecord](../../../proto/model/#auditrecord) objects. |
+| 200  | Success | Content is an array of [EventMessage](../../../proto/streaming/#eventmessage) objects. |
 | 403  | Failure | You do not have permission to read the update stream. |
 
 ### Examples

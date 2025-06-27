@@ -18,7 +18,7 @@ As such they require the `Audit` feature permission.
 :::
 
 :::caution
-Event endpoints are not intended for regular polling, as significant processing can be required depending on the timeframe and frequency of events.
+Event endpoints are not intended for regular polling, as significant processing can be required depending on the timeframe and frequency of updates.
 :::
 
 ## Available Endpoints

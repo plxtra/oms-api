@@ -1,22 +1,22 @@
 ---
 title: Order Management System REST API - Trades Controller
 sidebar:
-  label: /trades/between
+  label: /trades/toposition
 ---
 
-The `trades/between` URL provides access to executed Trades.
+The `trades/toposition` URL provides access to executed trades.
 
-## Retrieves the trades between two positions in the event stream.
+## Retrieves the trades between a timestamp and a position in the event stream.
 
 `GET /trades/between`
 
-Retrieves the trades between two positions in the event stream.
+Retrieves the trades between a timestamp and a position in the event stream for the requested views.
 
 ### Query Parameters
 
 | Parameter     | Expected | Description |
 |---------------|----------|-------------|
-| `from[<seq>]` | Optional | Describes the starting position of a sequence (exclusive). Repeat for each feed involved in OMS. If omitted, defaults to 0 for all feeds. |
+| from          | Optional | An ISO8601 date and time. The earliest timestamp to return (exclusive). If omitted, defaults to the beginning of time. |
 | `to[<seq>]`   | Required | Describes the ending position of a sequence (inclusive). Repeat for each feed involved in OMS. |
 | count         | Optional | The maximum number of records to return. If omitted, returns every record. |
 | owner         | Optional | The Owner ID to return events for. Repeat for additional owners. If omitted, returns all owners. |
@@ -35,16 +35,8 @@ Eg: `owner=A&account=B%2FC` will return events for all Accounts with Owner A, pl
 
 ### Examples
 
-In this example, we retrieve the first 100 Trades for the following sequences
-
-| Sequence | From | To  |
-|----------|------|-----|
-| oms      | 100  | 200 |
-| foundry  | 10   | 10  |
-| prodigy  | 1    | 20  |
-
-Note that for Foundry the `From` and `To` are identical, so no events will be provided.
+In this example, we retrieve the first 100 trades after a timestamp:
 
 ```sh
-curl --oauth2-bearer $AccessToken http://oms.hub/trades/between?from[prodigy]=1&from[oms]=100&from[foundry]=10&to[prodigy]=20&to[oms]=200&to[foundry]=10&count=100
+curl --oauth2-bearer $AccessToken http://oms.hub/trades/toposition?from=20250101T000000Z&to[prodigy]=20&to[oms]=200&to[foundry]=10&count=100
 ```

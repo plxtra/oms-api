@@ -50,3 +50,12 @@ Describes a request to record a transfer cash
 | -- | ----- | ---- | ----- | ----------- |
 | 1 | Transaction | [TransactionDetails](../oms2/#transactiondetails) |  | The common transaction details |
 | 10 | Transfer | [CashTransfer](../oms2/#cashtransfer) |  | The transfer-specific details |
+
+### TransformRequest
+
+Describes information about a transformation
+
+| No | Field | Type | Label | Description |
+| -- | ----- | ---- | ----- | ----------- |
+| 1 | TransformID | string |  | A unique identifier for the transformation |
+| 10 | Comments | string |  | Any comments to record against the transformation |

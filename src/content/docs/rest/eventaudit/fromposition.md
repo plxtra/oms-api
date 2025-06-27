@@ -40,5 +40,5 @@ Retrieves the events between a position and a timestamp in the event stream for 
 In this example, we retrieve the first 100 Transaction events between the most recent events seen for each sequence, and a set timestamp.
 
 ```sh
-curl --oauth2-bearer $AccessToken http://oms.hub/event/audit/fromposition?from[prodigy]=1&from[oms]=100&from[foundry]=10&to=20050101T123000Z&count=100
+curl --oauth2-bearer $AccessToken http://oms.hub/event/audit/fromposition?from[prodigy]=1&from[oms]=100&from[foundry]=10&to=20050101T123000Z&count=100&for=Transactions
 ```

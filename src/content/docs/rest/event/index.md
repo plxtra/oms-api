@@ -12,7 +12,7 @@ Event endpoints are intended for consumers to retrieve historical events:
 * For batch or end-of-day processes to retrieve events within a specific timeframe.
 
 :::caution
-Event endpoints are not intended for regular polling, as significant processing can be required depending on the timeframe and frequency of events.
+Event endpoints are not intended for regular polling, as significant processing can be required depending on the timeframe and frequency of updates.
 :::
 
 ## Available Endpoints

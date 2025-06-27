@@ -51,3 +51,13 @@ message CashTransferRequest {
 	// The transfer-specific details
 	Protocol.CashTransfer Transfer = 10;
 }
+
+// Describes information about a transformation
+message TransformRequest
+{
+	// A unique identifier for the transformation
+	string TransformID = 1;
+
+	// Any comments to record against the transformation
+	string Comments = 10;
+}

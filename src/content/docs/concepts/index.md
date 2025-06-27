@@ -33,7 +33,7 @@ Beyond just tracking of Balances, Holdings, and Orders, OMS provides a multitude
 
 * Trading Account metadata supply Account descriptions, vetting configuration, and more.
 * Exchange metadata describes the execution destinations and markets an application can expect to see.\
-  *This is used by OMS to route Order requests to the correct adapter for execution.*
+  *This is used by OMS to route Client Requests to the correct adapter for execution.*
 * Feed metadata describes the status of any upstream OMS adapters, for system reporting.
 * Owner metadata describes Account owners, which can be thought of as tenants with their own Account code namesepaces.
 * Request Status describes the operations supported by the various stages an Order Request goes through in its lifecycle.
